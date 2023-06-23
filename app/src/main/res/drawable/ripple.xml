@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple  android:color="@color/light_blue" xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list>
+            <item>
+                <shape android:shape="oval">
+                    <gradient
+                        android:type="linear"
+                        android:angle="270"
+                        android:startColor="@color/green"
+                        android:endColor="#B747BFDF" />
+                </shape>
+            </item>
+            <item android:drawable="@drawable/add_alert" android:gravity="center" />
+        </layer-list>
+    </item>
+</ripple>
