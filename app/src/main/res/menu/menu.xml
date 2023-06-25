@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+    <item android:title="Home" android:icon="@drawable/home_icon" android:id="@+id/homeFragment"/>
+    <item android:title="Favorite" android:icon="@drawable/favorite_icon" android:id="@+id/favoriteFragment"/>
+    <item android:title="Alerts" android:icon="@drawable/bell" android:id="@+id/alarmFragment"/>
+    <item android:title="Settings" android:icon="@drawable/settings_icon" android:id="@+id/settingsFragment"/>
+    </group>
+</menu>

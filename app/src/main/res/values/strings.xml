@@ -1,5 +1,30 @@
 <resources>
-    <string name="app_name">WeatherTracker</string>
+    <string name="app_name">Weather Tracker</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="visibility">Visibility</string>
+    <string name="ultra_violet">Ultra Violet</string>
+    <string name="humidity">Humidity</string>
+    <string name="pressure">Pressure</string>
+    <string name="wind">Wind</string>
+    <string name="cloud">Cloud</string>
+    <string name="discover_weather">Discover Weather</string>
+    <string name="track_the_weather_wherever_you_are">Track the weather wherever you are</string>
+    <string name="in_your_city">in Your City</string>
+    <string name="enable">Enable</string>
+    <string name="disable">Disable</string>
+    <string name="notification">Notification</string>
+    <string name="meter_sec">Meter/sec</string>
+    <string name="mile_hour">Mile/Hour</string>
+    <string name="location">Location</string>
+    <string name="gps">GPS</string>
+    <string name="map">Map</string>
+    <string name="language">Language</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="temperature">Temperature</string>
+    <string name="celsius">Celsius</string>
+    <string name="kelvin">Kelvin</string>
+    <string name="fahrenheit">Fahrenheit</string>
+    <string name="wind_speed">Wind Speed</string>
 </resources>
