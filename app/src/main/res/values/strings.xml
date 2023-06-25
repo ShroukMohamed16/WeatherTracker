@@ -31,4 +31,5 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="add">Add</string>
+    <string name="address">Address</string>
 </resources>
