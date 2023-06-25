@@ -17,7 +17,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         initUI()
+
+        val customDialog = InitialDialog(this)
+        customDialog.show()
+
         val  actionBar = supportActionBar
         if(actionBar != null) {
             actionBar.setHomeAsUpIndicator(R.drawable.menu_icon)
