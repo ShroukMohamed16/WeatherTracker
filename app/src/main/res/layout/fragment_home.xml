@@ -35,6 +35,7 @@
         app:layout_constraintTop_toBottomOf="@id/home_location" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="gone"
             android:id="@+id/no_permission_constraint"
             android:layout_width="match_parent"
             android:layout_height="200dp"
@@ -101,7 +102,6 @@
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:visibility="gone"
             android:id="@+id/constraint"
             android:layout_width="match_parent"
             android:layout_height="400dp"
@@ -130,7 +130,7 @@
                 android:id="@+id/home_temperature"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                android:text="13C"
+                android:text="13o"
                 android:textColor="@color/white"
                 android:fontFamily="serif"
                 android:textSize="40sp"
@@ -140,6 +140,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/imageView"
                 tools:layout_editor_absoluteY="100dp" />
+
+
+            <TextView
+                android:id="@+id/home_temperature_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:fontFamily="serif"
+                android:text="C"
+                android:textColor="@color/white"
+                android:textSize="40sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/home_temperature"
+                app:layout_constraintBottom_toBottomOf="@+id/home_temperature"
+                app:layout_constraintTop_toTopOf="@+id/home_temperature"
+                tools:layout_editor_absoluteX="153dp" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -165,12 +180,24 @@
                 android:id="@+id/wind_value"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="2.06 m/s"
+                android:text="2.06  "
                 android:textColor="@color/white"
-                app:layout_constraintEnd_toEndOf="@+id/wind_icon"
+                app:layout_constraintEnd_toStartOf="@id/wind_unit"
                 app:layout_constraintHorizontal_bias="0.437"
                 app:layout_constraintStart_toStartOf="@+id/wind_icon"
                 app:layout_constraintTop_toBottomOf="@id/wind_icon" />
+
+            <TextView
+                android:id="@+id/wind_unit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="m/s"
+                android:textColor="@color/white"
+                app:layout_constraintEnd_toEndOf="@id/wind_icon"
+                app:layout_constraintTop_toTopOf="@id/wind_value"
+                app:layout_constraintBottom_toBottomOf="@id/wind_value"
+                app:layout_constraintStart_toEndOf="@id/wind_value"
+                 />
 
             <TextView
                 android:id="@+id/textView"
@@ -179,7 +206,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:text="@string/wind"
-                app:layout_constraintEnd_toEndOf="@+id/wind_value"
+                app:layout_constraintEnd_toEndOf="@+id/wind_unit"
                 app:layout_constraintHorizontal_bias="0.7"
                 app:layout_constraintStart_toStartOf="@+id/wind_value"
                 app:layout_constraintTop_toBottomOf="@+id/wind_value" />
@@ -350,7 +377,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/hour_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -364,7 +390,6 @@
          />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:visibility="gone"
         android:id="@+id/day_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
