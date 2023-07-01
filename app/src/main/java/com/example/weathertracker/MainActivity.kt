@@ -20,8 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         initUI()
 
-        val customDialog = InitialDialog(this)
-        customDialog.show()
+
 
         val  actionBar = supportActionBar
         if(actionBar != null) {
