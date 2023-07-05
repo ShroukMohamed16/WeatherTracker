@@ -1,0 +1,26 @@
+<vector android:autoMirrored="true" android:height="408dp"
+    android:viewportHeight="408" android:viewportWidth="459"
+    android:width="459dp" xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillType="evenOdd" android:pathData="M291.83,1.93C282.35,0.66 272.66,0 262.81,0C147.91,0 54.77,89.54 54.77,200C54.77,310.46 147.91,400 262.81,400C349.23,400 423.34,349.35 454.77,277.24C452.74,277.3 450.7,277.33 448.66,277.33C343.72,277.33 258.65,198.54 258.65,101.33C258.65,64.45 270.9,30.22 291.83,1.93Z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:endX="362.68" android:endY="466.14"
+                android:startX="78.35" android:startY="-0" android:type="linear">
+                <item android:color="#FF9B87EB" android:offset="0"/>
+                <item android:color="#FF3010AC" android:offset="0.66"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:fillType="evenOdd" android:pathData="M280.17,360L131.74,360C58.98,360 0,299.56 0,225C0,150.44 58.98,90 131.74,90C190.25,90 239.85,129.08 257.03,183.16C264.41,181.1 272.16,180 280.17,180C328.68,180 368,220.29 368,270C368,319.71 328.68,360 280.17,360Z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:endX="374.31" android:endY="351.74"
+                android:startX="25.78" android:startY="90" android:type="linear">
+                <item android:color="#FFFFFFFF" android:offset="0"/>
+                <item android:color="#FFC1C1C1" android:offset="1"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+    <group>
+        <clip-path android:fillType="evenOdd" android:pathData="M280.17,360L131.74,360C58.98,360 0,299.56 0,225C0,150.44 58.98,90 131.74,90C190.25,90 239.85,129.08 257.03,183.16C264.41,181.1 272.16,180 280.17,180C328.68,180 368,220.29 368,270C368,319.71 328.68,360 280.17,360Z"/>
+        <path android:fillAlpha="0.05" android:fillColor="#000000" android:pathData="M131.74,360V359V360ZM280.17,360V361V360ZM257.03,183.16L256.08,183.46L256.37,184.38L257.3,184.12L257.03,183.16ZM131.74,361L280.17,361V359L131.74,359V361ZM-1,225C-1,300.09 58.41,361 131.74,361V359C59.56,359 1,299.03 1,225H-1ZM131.74,89C58.41,89 -1,149.91 -1,225H1C1,150.97 59.56,91 131.74,91V89ZM257.99,182.85C240.68,128.39 190.71,89 131.74,89V91C189.79,91 239.02,129.77 256.08,183.46L257.99,182.85ZM257.3,184.12C264.59,182.09 272.26,181 280.17,181V179C272.07,179 264.22,180.11 256.77,182.19L257.3,184.12ZM280.17,181C328.1,181 367,220.82 367,270H369C369,219.76 329.25,179 280.17,179V181ZM367,270C367,319.18 328.1,359 280.17,359V361C329.25,361 369,320.23 369,270H367Z"/>
+    </group>
+</vector>

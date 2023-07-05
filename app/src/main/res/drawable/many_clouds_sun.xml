@@ -1,0 +1,26 @@
+<vector android:autoMirrored="true" android:height="313dp"
+    android:viewportHeight="313" android:viewportWidth="420"
+    android:width="420dp" xmlns:aapt="http://schemas.android.com/aapt" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:pathData="M320.08,87.5m-87.5,0a87.5,87.5 0,1 1,175 0a87.5,87.5 0,1 1,-175 0">
+        <aapt:attr name="android:fillColor">
+            <gradient android:endX="320.08" android:endY="175"
+                android:startX="320.08" android:startY="0" android:type="linear">
+                <item android:color="#FFFFD358" android:offset="0"/>
+                <item android:color="#FFFA6C21" android:offset="1"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path android:fillType="evenOdd" android:pathData="M319.76,313L150.36,313C67.32,313 0,245.84 0,163C0,80.16 67.32,13 150.36,13C217.13,13 273.74,56.42 293.35,116.51C301.77,114.22 310.62,113 319.76,113C375.12,113 420,157.77 420,213C420,268.23 375.12,313 319.76,313Z">
+        <aapt:attr name="android:fillColor">
+            <gradient android:endX="419.46" android:endY="313.86"
+                android:startX="29.42" android:startY="13" android:type="linear">
+                <item android:color="#FFFFFFFF" android:offset="0"/>
+                <item android:color="#FFC1C1C1" android:offset="1"/>
+            </gradient>
+        </aapt:attr>
+    </path>
+    <group>
+        <clip-path android:fillType="evenOdd" android:pathData="M319.76,313L150.36,313C67.32,313 0,245.84 0,163C0,80.16 67.32,13 150.36,13C217.13,13 273.74,56.42 293.35,116.51C301.77,114.22 310.62,113 319.76,113C375.12,113 420,157.77 420,213C420,268.23 375.12,313 319.76,313Z"/>
+        <path android:fillAlpha="0.05" android:fillColor="#000000" android:pathData="M150.36,313V312V313ZM319.76,313V314V313ZM293.35,116.51L292.4,116.82L292.7,117.72L293.62,117.47L293.35,116.51ZM150.36,314L319.76,314V312L150.36,312V314ZM-1,163C-1,246.4 66.77,314 150.36,314V312C67.87,312 1,245.29 1,163H-1ZM150.36,12C66.77,12 -1,79.6 -1,163H1C1,80.71 67.87,14 150.36,14V12ZM294.3,116.2C274.56,55.71 217.57,12 150.36,12V14C216.69,14 272.92,57.13 292.4,116.82L294.3,116.2ZM293.62,117.47C301.95,115.21 310.71,114 319.76,114V112C310.53,112 301.59,113.23 293.09,115.54L293.62,117.47ZM319.76,114C374.57,114 419,158.33 419,213H421C421,157.22 375.67,112 319.76,112V114ZM419,213C419,267.67 374.57,312 319.76,312V314C375.67,314 421,268.78 421,213H419Z"/>
+    </group>
+</vector>
