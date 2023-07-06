@@ -20,9 +20,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.requestPermissions
 import androidx.core.app.NotificationCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.example.weathertracker.*
 import com.example.weathertracker.R
 import com.example.weathertracker.databinding.FragmentInitialDialogBinding
@@ -109,17 +112,7 @@ class InitialDialogFragment : DialogFragment() {
                 locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
     }
-
-     fun requestPermission() {
-        Log.i(TAG, "requestPermission: ")
-        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION),
-            Constants.LOCATION_PERMISSION_REQUEST_CODE_GPS
-        )
-
-    }
-
-     fun checkPermissions(): Boolean {
+    fun checkPermissions(): Boolean {
         Log.i(TAG, "checkPermissions: ")
         return ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.ACCESS_COARSE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED ||
@@ -127,17 +120,23 @@ class InitialDialogFragment : DialogFragment() {
                 PackageManager.PERMISSION_GRANTED
     }
 
+    fun requestPermission() {
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION
+            ,Manifest.permission.ACCESS_COARSE_LOCATION), Constants.LOCATION_PERMISSION_REQUEST_CODE_GPS)
+            Log.i(TAG, "requestPermission: ")
+     }
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        Log.i(TAG, "onRequestPermissionsResult: ")
         if (requestCode == Constants.LOCATION_PERMISSION_REQUEST_CODE_GPS) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                || (grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
                 editor.putBoolean(Constants.PERMISSIONS_IS_ENABLED,true)
                 editor.commit()
+                Log.i(TAG, "onRequestPermissionsResult: ")
             } else {
                 editor.putBoolean(Constants.PERMISSIONS_IS_ENABLED,false)
                 editor.commit()
@@ -159,9 +158,9 @@ class InitialDialogFragment : DialogFragment() {
                 }
 
                 binding.gpsInitialDialogRadioButton.isChecked -> {
-                    getLastLocation()
-                    /*val intent = Intent(requireActivity(),MainActivity::class.java)
-                    startActivity(intent)*/
+                   // getLastLocation()
+                    val intent = Intent(requireActivity(),GPSActivity::class.java)
+                    startActivity(intent)
                     dismiss()
                 }
             }

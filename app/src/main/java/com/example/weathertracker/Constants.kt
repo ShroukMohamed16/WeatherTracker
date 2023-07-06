@@ -18,7 +18,7 @@ object Constants {
     const val FAV_Lat_KEY = "fav_latitude"
     const val FAV_Lon_Key = "fav_longitude"
     const val LOCATION_PERMISSION_REQUEST_CODE = 100
-    const val LOCATION_PERMISSION_REQUEST_CODE_GPS = 200
+    const val LOCATION_PERMISSION_REQUEST_CODE_GPS = 1
     const val LOCATION_NAME = "locationName"
     const val FAV_LOCATION_NAME = "favLocationName"
     const val PERMISSIONS_IS_ENABLED = "PermissionISEnabled"
