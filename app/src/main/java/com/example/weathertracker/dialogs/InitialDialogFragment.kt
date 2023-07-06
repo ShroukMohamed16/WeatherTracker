@@ -1,7 +1,8 @@
-package com.example.weathertracker
+package com.example.weathertracker.dialogs
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
@@ -11,33 +12,26 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
-import android.view.Display
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.getSystemService
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
+import com.example.weathertracker.*
+import com.example.weathertracker.R
+import com.example.weathertracker.databinding.FragmentInitialDialogBinding
 import com.google.android.gms.location.*
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.material.button.MaterialButton
 
 private const val TAG = "InitialDialogFragment"
-const val PERMISSION_ID = 1
+
 class InitialDialogFragment : DialogFragment() {
-    lateinit var gpsRadioButton: RadioButton
-    lateinit var mapRadioButton: RadioButton
-    lateinit var enableNotificationRadioButton: RadioButton
-    lateinit var disableNotificationRadioButton: RadioButton
     lateinit var notificationManager: NotificationManager
     lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     lateinit var sharedPreferences:SharedPreferences
     lateinit var  editor:SharedPreferences.Editor
-    lateinit var okButton: MaterialButton
+    lateinit var binding: FragmentInitialDialogBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,26 +46,23 @@ class InitialDialogFragment : DialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view:View = inflater.inflate(R.layout.fragment_initial_dialog, container, false)
-        gpsRadioButton = view.findViewById(R.id.gps_initial_dialog_radioButton)
-        mapRadioButton = view.findViewById(R.id.map_initial_dialog_radioButton)
-        enableNotificationRadioButton = view.findViewById(R.id.enable_notification_dialog_radioButton)
-        disableNotificationRadioButton = view.findViewById(R.id.disable_notification_initial_dialog_radioButton)
-        okButton = view.findViewById(R.id.ok_btn_initial_dialog)
-        return view
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_initial_dialog, container, false)
+        return binding.root
     }
 
 
     private fun getLastLocation() {
         if(checkPermissions()){
+            Log.i(TAG, "getLastLocation: permission off")
             if(isLocationEnabled()){
-                requestLastLocation()
-
+                Log.i(TAG, "getLastLocation: provider enabled")
+                requestNewLocation()
             }else{
+                Log.i(TAG, "getLastLocation: permission on")
                 val intent =Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
             }
-
         }else{
             requestPermission()
         }
@@ -79,77 +70,110 @@ class InitialDialogFragment : DialogFragment() {
 
     private val locationCallback = object : LocationCallback(){
         override fun onLocationResult(locationRequest: LocationResult?) {
+            Log.i(TAG, "onLocationResult: callback")
             val lastLocation = locationRequest!!.lastLocation
             Log.i(TAG, "onLocationResult: ${lastLocation.latitude} & ${lastLocation.longitude}")
             editor.putString(Constants.Lat_KEY,lastLocation.latitude.toString())
             editor.putString(Constants.Lon_Key,lastLocation.longitude.toString())
-            editor.apply()
+            editor.commit()
 
         }
     }
 
     @SuppressLint("MissingPermission")
-    private fun requestLastLocation() {
+    private fun requestNewLocation() {
+        Log.i(TAG, "requestNewLocation: ")
         val request:LocationRequest = LocationRequest.create().apply {
             interval = 10000
             fastestInterval = 5000
             priority  = LocationRequest.PRIORITY_HIGH_ACCURACY
         }
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireContext())
         fusedLocationProviderClient.requestLocationUpdates(request,locationCallback,Looper.myLooper()).addOnSuccessListener {
-            val intent = Intent(requireActivity(),MainActivity::class.java)
+            val intent = Intent(requireActivity(), MainActivity::class.java)
             startActivity(intent)
+        }.addOnFailureListener {
+            Log.i(TAG, "requestNewLocation: Faileeeeeeeeed")
         }
     }
 
     private fun isLocationEnabled(): Boolean {
-        val locationManager = requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        Log.i(TAG, "isLocationEnabled: ")
+        val locationManager = requireContext()
+            .getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) ||
                 locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
     }
 
     private fun requestPermission() {
-        ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,
-            android.Manifest.permission.ACCESS_COARSE_LOCATION), PERMISSION_ID)
+        Log.i(TAG, "requestPermission: ")
+        ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION),
+            Constants.LOCATION_PERMISSION_REQUEST_CODE_GPS
+        )
 
     }
 
     private fun checkPermissions(): Boolean {
-        return ActivityCompat.checkSelfPermission(requireActivity(),android.Manifest.permission.ACCESS_COARSE_LOCATION) ==
+        Log.i(TAG, "checkPermissions: ")
+        return ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.ACCESS_COARSE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED ||
-                ActivityCompat.checkSelfPermission(requireActivity(),android.Manifest.permission.ACCESS_FINE_LOCATION) ==
+                ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.ACCESS_FINE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        Log.i(TAG, "onRequestPermissionsResult: ")
+        if (requestCode == Constants.LOCATION_PERMISSION_REQUEST_CODE_GPS) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                editor.putBoolean(Constants.PERMISSIONS_IS_ENABLED,true)
+                editor.commit()
+            } else {
+                editor.putBoolean(Constants.PERMISSIONS_IS_ENABLED,false)
+                editor.commit()
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        okButton.setOnClickListener {
+
+        binding.okBtnInitialDialog.setOnClickListener {
             when {
-                mapRadioButton.isChecked -> {
+                binding.mapInitialDialogRadioButton.isChecked -> {
+                    editor.putString(Constants.MAP_DESTINATION,"initial")
                     val intent = Intent(requireContext(), MapActivity::class.java)
                     startActivity(intent)
+                    requireActivity().finish()
                     dismiss()
                 }
 
-                gpsRadioButton.isChecked -> {
+                binding.gpsInitialDialogRadioButton.isChecked -> {
                     getLastLocation()
-
+                    /*val intent = Intent(requireActivity(),MainActivity::class.java)
+                    startActivity(intent)*/
                     dismiss()
                 }
             }
             when {
-                enableNotificationRadioButton.isChecked -> {
+                binding.enableNotificationDialogRadioButton.isChecked -> {
 
                 }
 
-                disableNotificationRadioButton.isChecked -> {
+                binding.disableNotificationInitialDialogRadioButton.isChecked -> {
                     notificationManager.cancelAll()
                     Log.i(TAG, "onViewCreated: Notification Disabled")
                     dismiss()
                 }
             }
             editor.putBoolean(isInitializedTag,true)
-            editor.apply()
+            editor.commit()
         }
 
 

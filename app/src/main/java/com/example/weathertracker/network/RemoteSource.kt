@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
 
 interface RemoteSource {
-    suspend fun getWeather(lat:Double,lon:Double,apiKey:String):MyResponse
+    suspend fun getWeather(lat:Double,lon:Double,units:String,apiKey:String):MyResponse
 }

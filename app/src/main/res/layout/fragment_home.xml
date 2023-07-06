@@ -39,7 +39,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@{myResponse.component3()}"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="30sp"
                 android:textStyle="bold"
@@ -128,8 +128,8 @@
                 android:id="@+id/constraint"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
-                android:background="@drawable/background"
                 android:layout_margin="25dp"
+                android:background="@drawable/background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/home_day">
@@ -138,31 +138,27 @@
                     android:id="@+id/home_state"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:layout_marginTop="5dp"
                     android:gravity="center"
-                    android:text="@{myResponse.component5().component14().get(0).component2()}"
+                    android:text="@{myResponse.component5().component14().get(0).description}"
                     android:textColor="@color/white"
                     android:textSize="30sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/home_temperature"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/home_temperature"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
                 <TextView
                     android:id="@+id/home_temperature"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
-                    android:text="@{String.valueOf(myResponse.component5().component4())}"
-                    android:textColor="@color/white"
                     android:fontFamily="serif"
-                    android:textSize="40sp"
+                    android:text="@{String.valueOf(myResponse.component5().component4()) +'°'}"
+                    android:textColor="@color/white"
+                    android:textSize="30sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toStartOf="@+id/home_state"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/imageView"
-                    tools:layout_editor_absoluteY="100dp" />
-
+                    app:layout_constraintTop_toBottomOf="@id/imageView" />
 
                 <TextView
                     android:id="@+id/home_temperature_unit"
@@ -170,24 +166,26 @@
                     android:layout_height="0dp"
                     android:fontFamily="serif"
                     android:text="C"
+                    android:layout_marginStart="10dp"
                     android:textColor="@color/white"
-                    android:textSize="40sp"
+                    android:textSize="30sp"
                     android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@id/home_temperature"
                     app:layout_constraintBottom_toBottomOf="@+id/home_temperature"
+                    app:layout_constraintStart_toEndOf="@id/home_temperature"
                     app:layout_constraintTop_toTopOf="@+id/home_temperature"
-                    tools:layout_editor_absoluteX="153dp" />
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
+                    android:layout_marginTop="5dp"
                     android:src="@drawable/many_clouds_sun"
-                    android:layout_marginTop="10dp"
                     app:layout_constraintBottom_toTopOf="@+id/home_temperature"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@id/home_state" />
 
                 <ImageView
                     android:id="@+id/wind_icon"
@@ -216,10 +214,10 @@
                     android:layout_height="wrap_content"
                     android:text="m/s"
                     android:textColor="@color/white"
-                    app:layout_constraintEnd_toEndOf="@id/wind_icon"
-                    app:layout_constraintTop_toTopOf="@id/wind_value"
                     app:layout_constraintBottom_toBottomOf="@id/wind_value"
-                    app:layout_constraintStart_toEndOf="@id/wind_value" />
+                    app:layout_constraintEnd_toEndOf="@id/wind_icon"
+                    app:layout_constraintStart_toEndOf="@id/wind_value"
+                    app:layout_constraintTop_toTopOf="@id/wind_value" />
 
                 <TextView
                     android:id="@+id/textView"
@@ -255,11 +253,11 @@
 
                 <TextView
                     android:id="@+id/textView2"
+                    style="@style/text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/cloud"
                     android:layout_marginTop="12dp"
-                    style="@style/text"
+                    android:text="@string/cloud"
                     app:layout_constraintEnd_toEndOf="@+id/cloud_value"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@id/cloud_value"
@@ -338,8 +336,8 @@
                     android:layout_height="24dp"
                     android:layout_marginTop="30dp"
                     android:src="@drawable/ultraviolet_icon"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintEnd_toStartOf="@+id/visibility_icon"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@id/cloud_icon"
                     app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -358,8 +356,8 @@
                     style="@style/text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/ultra_violet"
                     android:layout_marginTop="12dp"
+                    android:text="@string/ultra_violet"
                     app:layout_constraintEnd_toEndOf="@+id/ultra_violet_value"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@+id/ultra_violet_value"
@@ -390,8 +388,8 @@
                     style="@style/text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/visibility"
                     android:layout_marginTop="12dp"
+                    android:text="@string/visibility"
                     app:layout_constraintEnd_toEndOf="@+id/visibility_value"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@+id/visibility_value"

@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_alarm" />
     <fragment
         android:id="@+id/favoriteFragment"
-        android:name="com.example.weathertracker.FavoriteFragment"
+        android:name="com.example.weathertracker.favorite.view.FavoriteFragment"
         android:label="Favorite"
         tools:layout="@layout/fragment_favorite" />
     <fragment

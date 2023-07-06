@@ -19,6 +19,7 @@ import com.example.weathertracker.ApiState
 import com.example.weathertracker.Constants
 import com.example.weathertracker.R
 import com.example.weathertracker.databinding.FragmentHomeBinding
+import com.example.weathertracker.db.ConcreteLocalSource
 import com.example.weathertracker.home.viewmodel.HomeViewModel
 import com.example.weathertracker.home.viewmodel.HomeViewModelFactory
 import com.example.weathertracker.model.Repository
@@ -41,12 +42,12 @@ class HomeFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        homeViewModelFactory = HomeViewModelFactory(Repository.getInstance(ApiClient.getInstance()))
+        homeViewModelFactory = HomeViewModelFactory(Repository.getInstance(ApiClient.getInstance(),ConcreteLocalSource(requireContext())))
         homeViewModel = ViewModelProvider(this,homeViewModelFactory).get(HomeViewModel::class.java)
         sharedPreferences= requireActivity().getSharedPreferences(Constants.PREFERENCE_NAME, Context.MODE_PRIVATE)
         val lat = sharedPreferences.getString(Constants.Lat_KEY,"33.44")
         val lon = sharedPreferences.getString(Constants.Lon_Key,"94.04")
-        homeViewModel.getWeatherFromRetrofit(lat!!.toDouble(), lon!!.toDouble(),"eaa7758b00a4ea8b138646fe349149d1")
+        homeViewModel.getWeatherFromRetrofit(lat!!.toDouble(), lon!!.toDouble(),"metric","eaa7758b00a4ea8b138646fe349149d1")
     }
 
     override fun onCreateView(
@@ -69,8 +70,8 @@ class HomeFragment : Fragment() {
                     is ApiState.Success -> {
                         binding.progressBar.visibility = View.GONE
                         binding.constraint.visibility = View.VISIBLE
-                        val formatter = DateTimeFormatter.ofPattern("dd-MM-YYYY")
-                        binding.homeDay.text = LocalDate.now().format(formatter).toString()
+                        binding.homeDay.text = Constants.getDayWithSpecificFormat(result.data.current.dt)
+                        binding.homeLocation.text = sharedPreferences.getString(Constants.LOCATION_NAME,"UnKnown")
                         binding.myResponse = result.data
                         binding.imageView.setImageResource(Constants.setIcon(result.data.current.weather.get(0).icon))
                         binding.hourAdapter = hourAdapter

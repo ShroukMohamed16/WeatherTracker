@@ -4,5 +4,8 @@ import kotlinx.coroutines.flow.Flow
 import okhttp3.ResponseBody
 
 interface RepositoryInterface {
-    suspend fun getWeather(lat:Double , lon:Double, apiKey:String): Flow<MyResponse>?
+    suspend fun getWeather(lat:Double , lon:Double, units:String,apiKey:String): Flow<MyResponse>?
+    fun getFavPlacesFromRoom(): Flow<List<FavoriteItem>>
+    suspend fun insertToFavPlacesFromRoom(favoriteItem: FavoriteItem)
+    suspend fun deleteFromFavPlacesFromRoom(favoriteItem: FavoriteItem)
 }

@@ -1,6 +1,7 @@
 package com.example.weathertracker.model
 
 import android.util.Log
+import com.example.weathertracker.db.LocalSource
 import com.example.weathertracker.network.RemoteSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -9,14 +10,14 @@ import okhttp3.ResponseBody
 import kotlin.math.log
 
 private const val TAG = "Repository"
-class Repository(private var remoteSource: RemoteSource) :RepositoryInterface{
+class Repository(private var remoteSource: RemoteSource,var localSource: LocalSource) :RepositoryInterface{
 
     companion object{
         private var instance:Repository? = null
 
-        fun getInstance(remoteSource:RemoteSource):Repository{
+        fun getInstance(remoteSource:RemoteSource,localSource: LocalSource):Repository{
             return instance?: synchronized(this){
-                val temp = Repository(remoteSource)
+                val temp = Repository(remoteSource,localSource)
                 instance = temp
                 temp
             }
@@ -24,11 +25,23 @@ class Repository(private var remoteSource: RemoteSource) :RepositoryInterface{
         }
     }
 
-    override suspend fun getWeather(lat: Double, lon: Double, apiKey: String): Flow<MyResponse>? {
+    override suspend fun getWeather(lat: Double, lon: Double, units:String,apiKey: String): Flow<MyResponse>? {
         Log.i(TAG, "getWeather: data found")
         return flow{
-            val result = remoteSource.getWeather(lat,lon,apiKey)
+            val result = remoteSource.getWeather(lat,lon,units,apiKey)
             emit(result)
-            Log.i(TAG, "getWeather: ${remoteSource.getWeather(lat,lon,apiKey).current.uvi}")}
+            Log.i(TAG, "getWeather: ${remoteSource.getWeather(lat,lon,units,apiKey).current.uvi}")}
+    }
+
+    override fun getFavPlacesFromRoom(): Flow<List<FavoriteItem>> {
+        return localSource.getFavPlaces()
+    }
+
+    override suspend fun insertToFavPlacesFromRoom(favoriteItem: FavoriteItem) {
+        localSource.insertToFavPlaces(favoriteItem)
+    }
+
+    override suspend fun deleteFromFavPlacesFromRoom(favoriteItem: FavoriteItem) {
+        localSource.deleteFromFavPlaces(favoriteItem)
     }
 }

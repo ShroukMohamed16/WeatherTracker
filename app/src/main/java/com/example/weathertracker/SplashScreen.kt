@@ -5,8 +5,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.weathertracker.dialogs.InitialDialogFragment
 
 const val isInitializedTag = "INIT_STATE"
 
@@ -23,7 +23,6 @@ class SplashScreen : AppCompatActivity() {
         Handler().postDelayed({
             if(!isInitialized) {
                 showCustomDialog()
-                //val editor : SharedPreferences.Editor = sharedPreferences.edit()
             }else{
                 val intent = Intent(this@SplashScreen,MainActivity::class.java)
                 startActivity(intent)

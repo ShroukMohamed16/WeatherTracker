@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.cardview.widget.CardView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="30dp"
         android:layout_gravity="center"
         app:cardUseCompatPadding="true"
-        tools:context=".InitialDialogFragment">
+        tools:context=".dialogs.InitialDialogFragment">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#6AD2D2D2">
+
             <TextView
                 android:id="@+id/textView7"
                 android:layout_width="300dp"
@@ -65,6 +72,7 @@
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:text="Map"
+                    android:checked="true"
                     android:textColor="@color/startColor"
                     android:textSize="15sp"
                     android:textStyle="bold" />
@@ -99,6 +107,7 @@
                 app:layout_constraintStart_toEndOf="@+id/textView8"
                 app:layout_constraintTop_toTopOf="@+id/textView8"
                 app:layout_constraintVertical_bias="0.0" />
+
             <RadioGroup
                 android:id="@+id/notification_radioGroup"
                 android:layout_width="wrap_content"
@@ -123,6 +132,7 @@
                     android:id="@+id/disable_notification_initial_dialog_radioButton"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="Disable"
                     android:textColor="@color/startColor"
                     android:textSize="15sp"
@@ -130,8 +140,7 @@
             </RadioGroup>
 
 
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>
 
