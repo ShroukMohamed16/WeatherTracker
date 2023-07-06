@@ -20,9 +20,9 @@ class HomeViewModel(private val repositoryInterface: RepositoryInterface):ViewMo
 
 
 
-     fun getWeatherFromRetrofit(lat:Double, lon:Double,units:String, apiKey:String) {
+     fun getWeatherFromRetrofit(lat:Double, lon:Double,units:String, lang:String,apiKey:String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryInterface.getWeather(lat, lon, units,apiKey)
+            repositoryInterface.getWeather(lat, lon, units,lang,apiKey)
                 ?.catch { e ->
                     mutableWeather.value = ApiState.Failure(e)
                 }

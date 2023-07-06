@@ -4,12 +4,14 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.time.Instant
+import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.*
 
 object Constants {
+   const val HOME_DESTINATIO = "homeDestination"
     const val PREFERENCE_NAME = "my_prefs"
     const val Lat_KEY = "latitude"
     const val Lon_Key = "longitude"
@@ -21,6 +23,9 @@ object Constants {
     const val FAV_LOCATION_NAME = "favLocationName"
     const val PERMISSIONS_IS_ENABLED = "PermissionISEnabled"
     const val MAP_DESTINATION = "mapDestination"
+    const val API_KEY = "eaa7758b00a4ea8b138646fe349149d1"
+    const val CHANNEL_ID = "my_channel_id"
+    const val NOTIFICATION_ID = 1
 
 
     fun setIcon(icon:String):Int {
@@ -64,10 +69,11 @@ object Constants {
         return dayName
     }
 
-    fun getDayWithSpecificFormat(timestamp: Long):String{
-        val date = Date(timestamp)
-        val sdf = SimpleDateFormat("EEE,d MMM", Locale.getDefault())
-        val formattedDate = sdf.format(date)
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getDayWithSpecificFormat():String{
+        val localDate = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("EEE,d MMM")
+        val formattedDate = localDate.format(formatter)
         return formattedDate
     }
 

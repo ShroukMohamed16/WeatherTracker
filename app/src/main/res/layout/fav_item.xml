@@ -14,12 +14,12 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:elevation="20dp"
         app:cardBackgroundColor="#6BFFFFFF"
-        app:cardCornerRadius="50dp"
+        app:cardCornerRadius="30dp"
         app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fav_item_constraint"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/background"
@@ -35,7 +35,7 @@
                 android:text="@{favItem.cityName}"
                 android:gravity="center"
                 android:textColor="@color/white"
-                android:textSize="30sp"
+                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

@@ -1,23 +1,23 @@
 <resources>
     <string name="app_name">Weather Tracker</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="visibility">Visibility</string>
     <string name="ultra_violet">Ultra Violet</string>
     <string name="humidity">Humidity</string>
     <string name="pressure">Pressure</string>
     <string name="wind">Wind</string>
     <string name="cloud">Cloud</string>
-    <string name="discover_weather">Discover Weather</string>
-    <string name="track_the_weather_wherever_you_are">Track the weather wherever you are</string>
-    <string name="in_your_city">in Your City</string>
+    <string name="discover_weather" translatable="false">Discover Weather</string>
+    <string name="track_the_weather_wherever_you_are" translatable="false">Track the weather wherever you are</string>
+    <string name="in_your_city" translatable="false">in Your City</string>
     <string name="enable">Enable</string>
     <string name="disable">Disable</string>
     <string name="notification">Notification</string>
     <string name="meter_sec">Meter/sec</string>
     <string name="mile_hour">Mile/Hour</string>
     <string name="location">Location</string>
-    <string name="gps">GPS</string>
+    <string name="gps" translatable="false">GPS</string>
     <string name="map">Map</string>
     <string name="language">Language</string>
     <string name="english">English</string>
@@ -33,4 +33,20 @@
     <string name="add">Add</string>
     <string name="address">Address</string>
     <string name="allow">Allow</string>
+    <string name="weather_tracker">Weather Tracker</string>
+    <string name="weather_description">weather description</string>
+    <string name="weather">Weather</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="initial_settings">initial settings</string>
+    <string name="ok">Ok</string>
+    <string name="we_can_t_fetch_your_location">We Can’t fetch your location</string>
+    <string name="please_allow_weather_to_access_your_location">Please allow Weather to access your location</string>
+    <string name="m_s">m/s</string>
+    <string name="c">C</string>
+    <string name="no_places">No Places</string>
+    <string name="no_alerts">No Alerts</string>
+    <string name="save">save</string>
+    <string name="mile">m/h</string>
+    <string name="notification_disable">Notification Disabled</string>
+    <string name="notification_enabled">Notification Enabled</string>
 </resources>

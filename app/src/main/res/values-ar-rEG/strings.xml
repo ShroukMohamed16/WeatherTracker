@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"متابعة الطقس "</string>
+    <string name="visibility">"الرؤية "</string>
+    <string name="ultra_violet">الاشعة البنفسجية</string>
+    <string name="humidity">الرطوبة</string>
+    <string name="pressure">الضغط</string>
+    <string name="wind">الرياح</string>
+    <string name="cloud">السحاب</string>
+    <string name="save">حفظ</string>
+    <string name="no_alerts">لا توجد منبهات</string>
+    <string name="no_places">لا توجد اماكن</string>
+    <string name="m_s">م/ث</string>
+    <string name="please_allow_weather_to_access_your_location">فعل الوصول للموقع</string>
+    <string name="we_can_t_fetch_your_location">"لا يمكن الحصول ع موقعك "</string>
+    <string name="ok">تم</string>
+    <string name="initial_settings">الاعدادات الاولية</string>
+    <string name="dismiss">تجاهل</string>
+    <string name="weather">الطقس</string>
+    <string name="weather_description">حالة الطقس</string>
+    <string name="weather_tracker">ممتبع الطقس</string>
+    <string name="allow">السماح</string>
+    <string name="address">العنوان</string>
+    <string name="add">اضافة</string>
+    <string name="to">الى</string>
+    <string name="from">من</string>
+    <string name="alarm">المنبه</string>
+    <string name="wind_speed">سرعة الرياح</string>
+    <string name="arabic">عربى</string>
+    <string name="english">انجليزى</string>
+    <string name="language">اللغة</string>
+    <string name="map">الخريطة</string>
+    <string name="celsius">سيلزيوس</string>
+    <string name="kelvin">كلفن</string>
+    <string name="fahrenheit">فهرنهايت</string>
+    <string name="temperature">درجة الحرارة</string>
+    <string name="location">الموقع</string>
+    <string name="mile_hour">ميل/ساعة</string>
+    <string name="meter_sec">متر/ثانية</string>
+    <string name="notification">الاشعارات</string>
+    <string name="enable">تفعيل</string>
+    <string name="disable">ايقاف</string>
+    <string name="c">سليزيوس</string>
+</resources>

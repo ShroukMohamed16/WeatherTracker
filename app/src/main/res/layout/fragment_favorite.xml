@@ -4,6 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+            name="favAdapter"
+            type="com.example.weathertracker.favorite.view.FavoriteAdapter" />
 
 
     </data>
@@ -36,10 +39,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No Places"
+            android:text="@string/no_places"
+            android:id="@+id/no_places_txt"
             android:textStyle="bold"
             android:textColor="@color/white"
-            android:textSize="30dp"
+            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="@+id/favorite_img"
             app:layout_constraintHorizontal_bias="0.487"
             app:layout_constraintStart_toStartOf="@+id/favorite_img"
@@ -48,6 +52,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/fav_rv"
+            android:adapter="@{favAdapter}"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_constraintBottom_toBottomOf="parent"

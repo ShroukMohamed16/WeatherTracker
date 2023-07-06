@@ -16,14 +16,15 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.362" />
+        app:layout_constraintVertical_bias="0.362"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fontFamily="cursive"
-        android:text="Weather Tracker"
+        android:text="@string/weather_tracker"
         android:textColor="@color/endColor"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="@+id/imageView2"

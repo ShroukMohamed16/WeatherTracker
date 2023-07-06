@@ -3,19 +3,24 @@ package com.example.weathertracker.dialogs
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.LocationManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import com.example.weathertracker.*
@@ -31,7 +36,6 @@ class InitialDialogFragment : DialogFragment() {
     lateinit var sharedPreferences:SharedPreferences
     lateinit var  editor:SharedPreferences.Editor
     lateinit var binding: FragmentInitialDialogBinding
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +56,7 @@ class InitialDialogFragment : DialogFragment() {
     }
 
 
-    private fun getLastLocation() {
+     fun getLastLocation() {
         if(checkPermissions()){
             Log.i(TAG, "getLastLocation: permission off")
             if(isLocationEnabled()){
@@ -68,7 +72,7 @@ class InitialDialogFragment : DialogFragment() {
         }
     }
 
-    private val locationCallback = object : LocationCallback(){
+     val locationCallback = object : LocationCallback(){
         override fun onLocationResult(locationRequest: LocationResult?) {
             Log.i(TAG, "onLocationResult: callback")
             val lastLocation = locationRequest!!.lastLocation
@@ -81,7 +85,7 @@ class InitialDialogFragment : DialogFragment() {
     }
 
     @SuppressLint("MissingPermission")
-    private fun requestNewLocation() {
+     fun requestNewLocation() {
         Log.i(TAG, "requestNewLocation: ")
         val request:LocationRequest = LocationRequest.create().apply {
             interval = 10000
@@ -97,7 +101,7 @@ class InitialDialogFragment : DialogFragment() {
         }
     }
 
-    private fun isLocationEnabled(): Boolean {
+     fun isLocationEnabled(): Boolean {
         Log.i(TAG, "isLocationEnabled: ")
         val locationManager = requireContext()
             .getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -106,7 +110,7 @@ class InitialDialogFragment : DialogFragment() {
 
     }
 
-    private fun requestPermission() {
+     fun requestPermission() {
         Log.i(TAG, "requestPermission: ")
         ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION),
@@ -115,7 +119,7 @@ class InitialDialogFragment : DialogFragment() {
 
     }
 
-    private fun checkPermissions(): Boolean {
+     fun checkPermissions(): Boolean {
         Log.i(TAG, "checkPermissions: ")
         return ActivityCompat.checkSelfPermission(requireContext(),Manifest.permission.ACCESS_COARSE_LOCATION) ==
                 PackageManager.PERMISSION_GRANTED ||
@@ -163,12 +167,13 @@ class InitialDialogFragment : DialogFragment() {
             }
             when {
                 binding.enableNotificationDialogRadioButton.isChecked -> {
-
+                    enableNotifications()
+                    Toast.makeText(requireContext(),getString(R.string.notification_enabled), Toast.LENGTH_LONG)
                 }
 
                 binding.disableNotificationInitialDialogRadioButton.isChecked -> {
                     notificationManager.cancelAll()
-                    Log.i(TAG, "onViewCreated: Notification Disabled")
+                    Toast.makeText(requireContext(),getString(R.string.notification_disable),Toast.LENGTH_LONG)
                     dismiss()
                 }
             }
@@ -177,5 +182,35 @@ class InitialDialogFragment : DialogFragment() {
         }
 
 
+    }
+    private fun enableNotifications() {
+        // Create a notification channel
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = "My Channel"
+            val descriptionText = "My Channel Description"
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(Constants.CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+                enableLights(true)
+                lightColor = Color.RED
+                enableVibration(true)
+                vibrationPattern = longArrayOf(100, 200, 300, 400, 500)
+            }
+
+            val notificationManager = requireContext().getSystemService(NotificationManager::class.java)
+            notificationManager?.createNotificationChannel(channel)
+        }
+
+        // Show a notification
+        val notification = NotificationCompat.Builder(requireContext(), Constants.CHANNEL_ID)
+            .setSmallIcon(R.drawable.snow_icon)
+            .setContentTitle("My Notification")
+            .setContentText("This is my notification")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setAutoCancel(true)
+            .build()
+
+        val notificationManager =requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(Constants.NOTIFICATION_ID, notification)
     }
 }

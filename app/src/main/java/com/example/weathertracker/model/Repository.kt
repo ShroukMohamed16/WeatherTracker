@@ -25,12 +25,12 @@ class Repository(private var remoteSource: RemoteSource,var localSource: LocalSo
         }
     }
 
-    override suspend fun getWeather(lat: Double, lon: Double, units:String,apiKey: String): Flow<MyResponse>? {
+    override suspend fun getWeather(lat: Double, lon: Double, units:String,lang:String,apiKey: String): Flow<MyResponse>? {
         Log.i(TAG, "getWeather: data found")
         return flow{
-            val result = remoteSource.getWeather(lat,lon,units,apiKey)
+            val result = remoteSource.getWeather(lat,lon,units,lang,apiKey)
             emit(result)
-            Log.i(TAG, "getWeather: ${remoteSource.getWeather(lat,lon,units,apiKey).current.uvi}")}
+            Log.i(TAG, "getWeather: ${remoteSource.getWeather(lat,lon,units,lang,apiKey).current.uvi}")}
     }
 
     override fun getFavPlacesFromRoom(): Flow<List<FavoriteItem>> {

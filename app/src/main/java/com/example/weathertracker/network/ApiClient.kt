@@ -23,8 +23,8 @@ class ApiClient : RemoteSource{
     }
 
 
-    override suspend fun getWeather(lat: Double, lon: Double, units:String,apiKey: String): MyResponse {
-        return apiService.getWeather(lat,lon,units,apiKey)
+    override suspend fun getWeather(lat: Double, lon: Double, units:String,lang:String,apiKey: String): MyResponse {
+        return apiService.getWeather(lat,lon,units,lang,apiKey)
 
     }
 }

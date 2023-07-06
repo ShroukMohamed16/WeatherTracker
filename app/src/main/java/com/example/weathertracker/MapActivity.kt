@@ -3,19 +3,27 @@ package com.example.weathertracker
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.lifecycle.lifecycleScope
+import com.example.weathertracker.db.ConcreteLocalSource
 import com.example.weathertracker.dialogs.ConfirmDialog
 import com.example.weathertracker.model.FavoriteItem
+import com.example.weathertracker.model.Repository
+import com.example.weathertracker.network.ApiClient
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlinx.coroutines.launch
 import java.util.*
 
 private const val TAG = "MapActivity"
@@ -25,6 +33,7 @@ class MapActivity : AppCompatActivity() {
     private lateinit var  editor :SharedPreferences.Editor
     private var marker:Marker? = null
     var favoriteItem:FavoriteItem? = null
+    lateinit var repository: Repository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +41,10 @@ class MapActivity : AppCompatActivity() {
         sharedPreferences = getSharedPreferences(Constants.PREFERENCE_NAME,Context.MODE_PRIVATE)
         var permissionIsEnabled:Boolean =sharedPreferences.getBoolean(Constants.PERMISSIONS_IS_ENABLED,false)
         editor = sharedPreferences.edit()
+        repository = Repository.getInstance(
+            ApiClient.getInstance(),
+            ConcreteLocalSource(this)
+        )
         mapView = findViewById(R.id.map_view)
         mapView.onCreate(savedInstanceState)
 
@@ -49,6 +62,7 @@ class MapActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        editor.putString(Constants.MAP_DESTINATION,"initial").commit()
         super.onDestroy()
         mapView.onDestroy()
     }
@@ -75,8 +89,114 @@ class MapActivity : AppCompatActivity() {
     }
     @SuppressLint("MissingPermission")
     private fun initMap() {
+        mapView.getMapAsync { googleMap->
+            marker = googleMap.addMarker(MarkerOptions().position(LatLng(0.0,0.0)))
+            googleMap.isMyLocationEnabled = true
+            if(sharedPreferences.getString(Constants.MAP_DESTINATION,"initial")=="favorite") {
+                googleMap.setOnMapClickListener { latLng ->
+                    updateMarkerPosition(latLng)
+                    val geocoder =
+                        Geocoder(this, Locale.getDefault())
+                    val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+                    if (addresses!!.isNotEmpty()) {
+                        val address = addresses[0]
+                        val city = address.adminArea
+                        if (!city.isNullOrEmpty()) {
+                            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+                            builder.setMessage("messageFavMapAlert $city ?")
+                            builder.setPositiveButton("Save") { dialog, it ->
+                                val lat = latLng.latitude
+                                val lng = latLng.longitude
+                                lifecycleScope.launch {
+                                    repository.insertToFavPlacesFromRoom(
+                                        FavoriteItem(
+                                            lat.toInt() + lng.toInt(),
+                                            city,
+                                            lat,
+                                            lng
+                                        )
+                                    )
+                                }
+                                Toast.makeText(
+                                    this,
+                                    "Location saved: $city",
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
-        mapView.getMapAsync { googleMap ->
+                            }
+                            builder.setNegativeButton("No") { dialog, which ->
+                            }
+                            val dialog = builder.create()
+                            dialog.show()
+                        } else {
+                            Toast.makeText(
+                                this,
+                                "Choose Specific Place",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }else{
+                googleMap.setOnMapClickListener { latLng ->
+                    updateMarkerPosition(latLng)
+                    val geocoder =
+                        Geocoder(this, Locale.getDefault())
+                    val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+                    if (addresses!!.isNotEmpty()) {
+                        val address = addresses[0]
+                        val city = address.adminArea
+                        if (!city.isNullOrEmpty()) {
+                            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+                            builder.setMessage("messageInitialMapAlert $city ?")
+                            builder.setPositiveButton("Save") { dialog, it ->
+                                val lat = latLng.latitude
+                                val lng = latLng.longitude
+                                editor.putString(Constants.Lat_KEY, lat.toString())
+                                editor.putString(Constants.Lon_Key, lng.toString())
+                                editor.putString(Constants.LOCATION_NAME,city)
+                                editor.commit()
+                                Toast.makeText(
+                                    this,
+                                    "Location saved: $city",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                val intent = Intent(this, MainActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }
+                            builder.setNegativeButton("No") { dialog, which ->
+                                dialog.dismiss()
+                            }
+                            val dialog = builder.create()
+                            dialog.show()
+                        } else {
+                            Toast.makeText(
+                                this,
+                                "Choose Specific Place",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "error",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+
+
+        }
+
+        /*mapView.getMapAsync { googleMap ->
             marker = googleMap.addMarker(MarkerOptions().position(LatLng(0.0, 0.0)))
             googleMap.isMyLocationEnabled = true
                 googleMap.setOnMapClickListener { latLng ->
@@ -97,7 +217,7 @@ class MapActivity : AppCompatActivity() {
                     }
                     showConfirmDialog()
                 }
-        }
+        }*/
 
     }
 
@@ -120,6 +240,7 @@ class MapActivity : AppCompatActivity() {
         }
 
     }
+
     private fun showConfirmDialog(){
         supportFragmentManager
             .beginTransaction()
@@ -129,4 +250,6 @@ class MapActivity : AppCompatActivity() {
     private fun updateMarkerPosition(latLng: LatLng) {
         marker?.position = latLng
     }
+
+
 }

@@ -22,9 +22,4 @@
         android:layout_gravity="start"
         app:menu="@menu/menu"/>
 
-
-
-
-
-
 </androidx.drawerlayout.widget.DrawerLayout>
