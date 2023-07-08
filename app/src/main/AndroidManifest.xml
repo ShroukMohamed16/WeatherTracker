@@ -17,15 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherTracker"
         tools:targetApi="31">
+
         <activity
-            android:name=".GPSActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".MapActivity"
+            android:name=".map.view.MapActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

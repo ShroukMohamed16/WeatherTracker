@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">"متابعة الطقس "</string>
+    <string name="app_name">"متابعة الطقس"</string>
     <string name="visibility">"الرؤية "</string>
     <string name="ultra_violet">الاشعة البنفسجية</string>
     <string name="humidity">الرطوبة</string>
@@ -8,7 +8,7 @@
     <string name="wind">الرياح</string>
     <string name="cloud">السحاب</string>
     <string name="save">حفظ</string>
-    <string name="no_alerts">لا توجد منبهات</string>
+    <string name="no_alerts">لا توجد تنبيهات</string>
     <string name="no_places">لا توجد اماكن</string>
     <string name="m_s">م/ث</string>
     <string name="please_allow_weather_to_access_your_location">فعل الوصول للموقع</string>
@@ -26,8 +26,8 @@
     <string name="from">من</string>
     <string name="alarm">المنبه</string>
     <string name="wind_speed">سرعة الرياح</string>
-    <string name="arabic">عربى</string>
-    <string name="english">انجليزى</string>
+    <string name="arabic">العربية</string>
+    <string name="english">الانجليزية</string>
     <string name="language">اللغة</string>
     <string name="map">الخريطة</string>
     <string name="celsius">سيلزيوس</string>
@@ -39,6 +39,18 @@
     <string name="meter_sec">متر/ثانية</string>
     <string name="notification">الاشعارات</string>
     <string name="enable">تفعيل</string>
-    <string name="disable">ايقاف</string>
-    <string name="c">سليزيوس</string>
+    <string name="disable">الغاء</string>
+    <string name="c">C</string>
+    <string name="mile">ميل/ساعة</string>
+    <string name="notification_disable">تم ايقاف الاشعارات</string>
+    <string name="notification_enabled">تم تفعيل الاشعارات</string>
+    <string name="Save">حفظ</string>
+    <string name="no">الغاء</string>
+    <string name="f">F</string>
+    <string name="k">K</string>
+    <string name="favorite">المفضلة</string>
+    <string name="home">الرئيسية</string>
+    <string name="settings">الاعدادات</string>
+    <string name="alarms">التنبيهات</string>
+    <string name="gps" translatable="false">موقعى الحالى</string>
 </resources>

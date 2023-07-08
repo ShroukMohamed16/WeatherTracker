@@ -6,9 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.weathertracker.model.FavoriteItem
 
-@Database(entities = [FavoriteItem::class] , version = 1)
+@Database(entities = [FavoriteItem::class], version = 6)
 abstract class WeatherDataBase:RoomDatabase(){
-        abstract fun getFavouriteWeatherDao(): FavoriteWeatherDAO
+        abstract fun getDao(): DAO
         companion object {
             @Volatile
             private var INSTANCE: WeatherDataBase? = null

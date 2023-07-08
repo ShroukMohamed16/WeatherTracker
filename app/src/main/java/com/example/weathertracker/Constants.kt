@@ -12,6 +12,7 @@ import java.util.*
 
 object Constants {
    const val HOME_DESTINATIO = "homeDestination"
+    const val isInitializedTag = "INIT_STATE"
     const val PREFERENCE_NAME = "my_prefs"
     const val Lat_KEY = "latitude"
     const val Lon_Key = "longitude"
@@ -22,10 +23,12 @@ object Constants {
     const val LOCATION_NAME = "locationName"
     const val FAV_LOCATION_NAME = "favLocationName"
     const val PERMISSIONS_IS_ENABLED = "PermissionISEnabled"
+    const val NOTIFICATIONS_IS_ENABLED = "NotificationISEnabled"
     const val MAP_DESTINATION = "mapDestination"
     const val API_KEY = "eaa7758b00a4ea8b138646fe349149d1"
     const val CHANNEL_ID = "my_channel_id"
     const val NOTIFICATION_ID = 1
+    const val LOCAL_LANGUAGE = "lang"
 
 
     fun setIcon(icon:String):Int {

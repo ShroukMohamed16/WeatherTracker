@@ -7,13 +7,13 @@
 
     <fragment
         android:id="@+id/alarmFragment"
-        android:name="com.example.weathertracker.AlarmFragment"
-        android:label="Alarms"
+        android:name="com.example.weathertracker.alarm.view.AlarmFragment"
+        android:label="@string/alarms"
         tools:layout="@layout/fragment_alarm" />
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.weathertracker.favorite.view.FavoriteFragment"
-        android:label="Favorite"
+        android:label="@string/favorite"
         tools:layout="@layout/fragment_favorite">
         <action
             android:id="@+id/action_favoriteFragment_to_homeFragment"
@@ -22,11 +22,11 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.weathertracker.home.view.HomeFragment"
-        android:label="Home"
+        android:label="@string/home"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.weathertracker.SettingsFragment"
-        android:label="Settings"
+        android:name="com.example.weathertracker.settings.SettingsFragment"
+        android:label="@string/settings"
         tools:layout="@layout/fragment_settings" />
 </navigation>

@@ -1,4 +1,4 @@
-package com.example.weathertracker
+package com.example.weathertracker.settings
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -8,33 +8,35 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.content.res.Configuration
 import android.graphics.Color
 import android.location.LocationManager
 import android.os.Build
 import android.os.Bundle
-import android.os.LocaleList
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.os.LocaleListCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.lifecycleScope
+import com.example.weathertracker.Constants
+import com.example.weathertracker.MainActivity
+import com.example.weathertracker.R
 import com.example.weathertracker.databinding.FragmentSettingsBinding
 import com.example.weathertracker.dialogs.InitialDialogFragment
+import com.example.weathertracker.map.view.MapActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.launch
 import java.util.*
 
 
@@ -56,7 +58,7 @@ class SettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding =DataBindingUtil.inflate(inflater,R.layout.fragment_settings, container, false)
+        binding =DataBindingUtil.inflate(inflater, R.layout.fragment_settings, container, false)
         return binding.root
     }
 
@@ -66,12 +68,12 @@ class SettingsFragment : Fragment() {
         binding.langRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
             when (i) {
                 R.id.arabicRadioBtn -> {
-                    editor.putString("lang", "ar").apply()
-                    setLanguage(requireContext(), "ar")
-                    activity?.recreate()
+                        editor.putString(Constants.LOCAL_LANGUAGE, "ar").apply()
+                        setLanguage(requireContext(), "ar")
+                        activity?.recreate()
                 }
                 R.id.english_radio_btn -> {
-                    editor.putString("lang", "en").apply()
+                    editor.putString(Constants.LOCAL_LANGUAGE, "en").apply()
                     setLanguage(requireContext(), "en")
                     activity?.recreate()
 
@@ -81,14 +83,17 @@ class SettingsFragment : Fragment() {
         binding.notfRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
             when (i) {
                 R.id.enable_radio_btn -> {
-                    enableNotifications()
+                  //  enableNotifications()
+                    editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,true)
+                    Toast.makeText(requireContext(),getString(R.string.notification_enabled),Toast.LENGTH_LONG).show()
 
 
                 }
                 R.id.disable_radio_btn -> {
-                    val notificationManager =  requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-                    notificationManager.cancelAll()
-                    Toast.makeText(requireContext(),getString(R.string.notification_disable),Toast.LENGTH_LONG)
+                    /*val notificationManager =  requireActivity().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                    notificationManager.cancelAll()*/
+                    editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,false)
+                    Toast.makeText(requireContext(),getString(R.string.notification_disable),Toast.LENGTH_LONG).show()
 
                 }
             }
@@ -100,7 +105,7 @@ class SettingsFragment : Fragment() {
                 }
                 R.id.map_radio_btn -> {
 
-                    val intent = Intent(requireActivity(),MapActivity::class.java)
+                    val intent = Intent(requireActivity(), MapActivity::class.java)
                     startActivity(intent)
                 }
             }
@@ -109,17 +114,17 @@ class SettingsFragment : Fragment() {
             when (i) {
                 R.id.celsius_radio_btn -> {
                     editor.putString("units", "metric").apply()
-                    editor.putString("unitCharacter","C").apply()
+                    editor.putString("unitCharacter",getString(R.string.c)).apply()
                 }
                 R.id.fahren_radio_btn -> {
                     editor.putString("units", "imperial").apply()
-                    editor.putString("unitCharacter","F").apply()
+                    editor.putString("unitCharacter",getString(R.string.f)).apply()
 
 
                 }
                 R.id.kelvin_radio_btn ->{
                     editor.putString("units", "standard").apply()
-                    editor.putString("unitCharacter","K").apply()
+                    editor.putString("unitCharacter",getString(R.string.k)).apply()
 
 
                 }
@@ -138,11 +143,9 @@ class SettingsFragment : Fragment() {
             }
         }
 
-
     }
 
     fun  setLanguage(context: Context, language:String) {
-
         val locale = Locale(language)
         val config = context.resources.configuration
         config.locale= Locale(language)

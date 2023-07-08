@@ -4,7 +4,9 @@ import androidx.room.*
 import com.example.weathertracker.model.FavoriteItem
 import kotlinx.coroutines.flow.Flow
 @Dao
-interface FavoriteWeatherDAO {
+interface DAO {
+
+        //For Favorite Places
         @Query("SELECT * FROM fav_places")
         fun getAllFavorites(): Flow<List<FavoriteItem>>
 
@@ -13,5 +15,18 @@ interface FavoriteWeatherDAO {
 
         @Delete
         suspend fun deleteFavPlace(favoriteItem: FavoriteItem)
+
+        //For Alarms
+
+   /*     @Query("SELECT * FROM alarms")
+        fun getAllAlarms(): Flow<List<Alarm>>
+
+        @Insert(onConflict = OnConflictStrategy.REPLACE)
+        suspend fun insertAlarm(alarm: Alarm)
+
+        @Delete
+        suspend fun deleteAlarm(alarm: Alarm)
+*/
+
 
 }

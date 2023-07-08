@@ -9,6 +9,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationView
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
     lateinit var drawerLayout: DrawerLayout
@@ -19,6 +20,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initUI()
 
+        val language = getSharedPreferences(Constants.PREFERENCE_NAME,Context.MODE_PRIVATE).getString(Constants.LOCAL_LANGUAGE, "en")
+        val locale = language?.let { Locale(it) }
+        resources.configuration.setLocale(locale)
 
 
         val  actionBar = supportActionBar

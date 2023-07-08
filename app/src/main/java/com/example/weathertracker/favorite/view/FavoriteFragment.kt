@@ -18,13 +18,13 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.weathertracker.Constants
-import com.example.weathertracker.MapActivity
 import com.example.weathertracker.R
 import com.example.weathertracker.RoomState
 import com.example.weathertracker.databinding.FragmentFavoriteBinding
 import com.example.weathertracker.db.ConcreteLocalSource
 import com.example.weathertracker.favorite.viewmodel.FavoriteViewModel
 import com.example.weathertracker.favorite.viewmodel.FavoriteViewModelFactory
+import com.example.weathertracker.map.view.MapActivity
 import com.example.weathertracker.model.FavoriteItem
 import com.example.weathertracker.model.Repository
 import com.example.weathertracker.network.ApiClient
@@ -99,7 +99,7 @@ class FavoriteFragment : Fragment(),OnClickListener {
                 .putString(Constants.MAP_DESTINATION,"favorite")
                 .commit()
 
-            val intent = Intent(requireActivity(),MapActivity::class.java)
+            val intent = Intent(requireActivity(), MapActivity::class.java)
             startActivity(intent)
         }
     }

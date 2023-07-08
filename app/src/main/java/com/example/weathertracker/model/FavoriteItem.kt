@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "fav_places")
 data class FavoriteItem(
-    @PrimaryKey(autoGenerate = true)
-    var id:Int,
+    @PrimaryKey
+    var id:Double,
     var cityName:String,
     var lat:Double,
     var lon:Double

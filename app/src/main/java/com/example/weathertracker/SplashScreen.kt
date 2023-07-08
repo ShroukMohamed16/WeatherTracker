@@ -1,18 +1,17 @@
 package com.example.weathertracker
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weathertracker.dialogs.InitialDialogFragment
 
-const val isInitializedTag = "INIT_STATE"
-private const val TAG = "SplashScreen"
-class SplashScreen : AppCompatActivity() {
+
+@SuppressLint("CustomSplashScreen")
+class SplashScreen : AppCompatActivity(){
 
    lateinit var sharedPreferences: SharedPreferences
 
@@ -20,7 +19,8 @@ class SplashScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
         sharedPreferences = getSharedPreferences(Constants.PREFERENCE_NAME,Context.MODE_PRIVATE)
-        var isInitialized:Boolean =sharedPreferences.getBoolean(isInitializedTag,false)
+        val isInitialized:Boolean =sharedPreferences.getBoolean(Constants.isInitializedTag,false)
+      //  val isPermissionEnabled:Boolean =sharedPreferences.getBoolean(Constants.PERMISSIONS_IS_ENABLED,false)
 
         Handler().postDelayed({
             if(!isInitialized) {
@@ -31,27 +31,6 @@ class SplashScreen : AppCompatActivity() {
                 finish()
             }
         }, 5000)
-
-
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == Constants.LOCATION_PERMISSION_REQUEST_CODE_GPS) {
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                || (grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-               /* editor.putBoolean(Constants.PERMISSIONS_IS_ENABLED,true)
-                editor.commit()*/
-                Log.i(TAG, "onRequestPermissionsResult: ")
-            } else {
-                /*editor.putBoolean(Constants.PERMISSIONS_IS_ENABLED,false)
-                editor.commit()*/
-            }
-        }
     }
 
      private fun showCustomDialog(){
@@ -60,4 +39,5 @@ class SplashScreen : AppCompatActivity() {
             .add(InitialDialogFragment(),"initialDialog")
             .commit()
     }
+
 }
