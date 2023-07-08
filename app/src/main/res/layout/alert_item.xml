@@ -8,7 +8,6 @@
         <variable
             name="alarmItem"
             type="com.example.weathertracker.model.Alarm" />
-
     </data>
 
     <androidx.cardview.widget.CardView

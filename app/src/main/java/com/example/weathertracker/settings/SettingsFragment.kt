@@ -18,24 +18,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.os.LocaleListCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.lifecycleScope
 import com.example.weathertracker.Constants
 import com.example.weathertracker.MainActivity
 import com.example.weathertracker.R
 import com.example.weathertracker.databinding.FragmentSettingsBinding
-import com.example.weathertracker.dialogs.InitialDialogFragment
 import com.example.weathertracker.map.view.MapActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.util.*
 
@@ -69,14 +66,15 @@ class SettingsFragment : Fragment() {
             when (i) {
                 R.id.arabicRadioBtn -> {
                         editor.putString(Constants.LOCAL_LANGUAGE, "ar").apply()
-                        setLanguage(requireContext(), "ar")
-                        activity?.recreate()
+                        GlobalScope.launch(Dispatchers.Main) {
+                            setLanguage(requireContext(), "ar")
+                        }
                 }
                 R.id.english_radio_btn -> {
                     editor.putString(Constants.LOCAL_LANGUAGE, "en").apply()
-                    setLanguage(requireContext(), "en")
-                    activity?.recreate()
-
+                    GlobalScope.launch(Dispatchers.Main) {
+                        setLanguage(requireContext(), "en")
+                    }
                 }
             }
             }
@@ -154,6 +152,7 @@ class SettingsFragment : Fragment() {
         context.resources.updateConfiguration(config, context.resources.displayMetrics)
         context.createConfigurationContext(config)
 
+      //  requireActivity().recreate()
     }
     fun getLastLocation() {
         if(checkPermissions()){
@@ -266,6 +265,7 @@ class SettingsFragment : Fragment() {
         notificationManager.notify(Constants.NOTIFICATION_ID, notification)
         Toast.makeText(requireContext(),getString(R.string.notification_enabled),Toast.LENGTH_LONG)
     }
+
 
 
 

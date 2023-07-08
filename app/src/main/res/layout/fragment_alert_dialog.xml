@@ -12,7 +12,7 @@
         app:cardCornerRadius="30dp"
         android:layout_gravity="center"
         app:cardUseCompatPadding="true"
-        tools:context=".dialogs.AlertDialogFragment">
+        tools:context=".alarm.view.AlertDialogFragment">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -23,7 +23,7 @@
             <TextView
                 android:id="@+id/from"
                 style="@style/text"
-                android:layout_width="150dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="50dp"
@@ -37,7 +37,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/from_constraint"
-                android:layout_width="150dp"
+                android:layout_width="130dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/background"
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:gravity="center"
-                    android:text="11:22 AM"
+                    android:text="@string/start_time"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="26 Feb,2021"
+                    android:text="@string/start_date"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -78,7 +78,7 @@
             <TextView
                 android:id="@+id/to"
                 style="@style/text"
-                android:layout_width="150dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:layout_marginEnd="5dp"
@@ -92,7 +92,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/to_constraint"
-                android:layout_width="150dp"
+                android:layout_width="130dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/background"
@@ -109,7 +109,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:gravity="center"
-                    android:text="11:22 AM"
+                    android:text="@string/end_time"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -123,7 +123,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="26 Feb,2021"
+                    android:text="@string/end_date"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -150,6 +150,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="50dp"
                     android:text="@string/alarm"
+                    android:checked="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"

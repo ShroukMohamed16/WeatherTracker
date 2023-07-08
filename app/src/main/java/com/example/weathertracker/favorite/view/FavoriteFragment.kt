@@ -10,16 +10,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.NavigationUI
 import com.example.weathertracker.Constants
 import com.example.weathertracker.R
-import com.example.weathertracker.RoomState
+import com.example.weathertracker.favorite.RoomState
 import com.example.weathertracker.databinding.FragmentFavoriteBinding
 import com.example.weathertracker.db.ConcreteLocalSource
 import com.example.weathertracker.favorite.viewmodel.FavoriteViewModel
@@ -77,6 +74,9 @@ class FavoriteFragment : Fragment(),OnClickListener {
                         if(result.data.size > 0) {
                             binding.favoriteImg.visibility = View.GONE
                             binding.noPlacesTxt.visibility = View.GONE
+                        }else{
+                            binding.favoriteImg.visibility = View.VISIBLE
+                            binding.noPlacesTxt.visibility = View.VISIBLE
                         }
                         binding.favAdapter = myFavoriteAdapter
                         myFavoriteAdapter.submitList(result.data)

@@ -44,4 +44,16 @@ class Repository(private var remoteSource: RemoteSource,var localSource: LocalSo
     override suspend fun deleteFromFavPlacesFromRoom(favoriteItem: FavoriteItem) {
         localSource.deleteFromFavPlaces(favoriteItem)
     }
+
+    override fun getAlarmsFromRoom(): Flow<List<Alarm>> {
+        return localSource.getAlarms()
+    }
+
+    override suspend fun insertAlarmToRoom(alarm: Alarm) {
+        localSource.insertToAlarms(alarm)
+    }
+
+    override suspend fun deleteAlarmFromRoom(alarm: Alarm) {
+        localSource.deleteFromAlarms(alarm)
+    }
 }

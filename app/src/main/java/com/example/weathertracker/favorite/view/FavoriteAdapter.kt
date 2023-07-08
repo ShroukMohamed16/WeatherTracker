@@ -22,7 +22,6 @@ class FavoriteAdapter(private var onClickListener: OnClickListener):ListAdapter<
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.fav_item,parent,false)
-
         return FavoriteViewHolder(binding)
     }
 

@@ -1,10 +1,8 @@
 package com.example.weathertracker.favorite.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weathertracker.RoomState
+import com.example.weathertracker.favorite.RoomState
 import com.example.weathertracker.model.FavoriteItem
 import com.example.weathertracker.model.RepositoryInterface
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +22,7 @@ class FavoriteViewModel(val repositoryInterface: RepositoryInterface):ViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             repositoryInterface.getFavPlacesFromRoom()
                 ?.catch { e->
-                        mutableFavPlaces.value=RoomState.Failure(e)
+                        mutableFavPlaces.value= RoomState.Failure(e)
                 }
                 ?.collect{ favPlace->
                         mutableFavPlaces.value = RoomState.Success(favPlace)

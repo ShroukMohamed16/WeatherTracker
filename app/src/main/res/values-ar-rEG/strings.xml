@@ -53,4 +53,8 @@
     <string name="settings">الاعدادات</string>
     <string name="alarms">التنبيهات</string>
     <string name="gps" translatable="false">موقعى الحالى</string>
+    <string name="end_time">وقت الانتهاء</string>
+    <string name="end_date">تاريخ الانتهاء</string>
+    <string name="start_time">وقت البدء</string>
+    <string name="start_date">تاريخ البدء</string>
 </resources>
