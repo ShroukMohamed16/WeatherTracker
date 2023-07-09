@@ -1,5 +1,25 @@
 package com.example.weathertracker.model
 
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "weather")
+data class WeatherEntity(
+    val lat: Double,
+    val lon: Double,
+    val timezone: String,
+    val timezoneOffset: Int,
+    val current: CurrentWeather,
+    val hourly: List<HourlyWeather>,
+    val daily: List<DailyWeather>,
+    val alerts: List<Alert>? )
+{
+    @PrimaryKey
+    var id:Int = 0
+
+}
+
 data class MyResponse(
     val lat: Double,
     val lon: Double,
@@ -10,6 +30,7 @@ data class MyResponse(
     val hourly: List<HourlyWeather>,
     val daily: List<DailyWeather>,
     val alerts: List<Alert>? )
+
 
 
 data class CurrentWeather(

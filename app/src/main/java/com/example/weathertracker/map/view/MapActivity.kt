@@ -90,7 +90,7 @@ class MapActivity : AppCompatActivity() {
                         val city = address.adminArea
                         if (!city.isNullOrEmpty()) {
                             val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-                            builder.setMessage("FavMap\n $city ?")
+                            builder.setMessage("$city ?")
                             builder.setPositiveButton(getString(R.string.Save)) { dialog, it ->
                                 val lat = latLng.latitude
                                 val lng = latLng.longitude
@@ -119,7 +119,7 @@ class MapActivity : AppCompatActivity() {
                         val city = address.adminArea
                         if (!city.isNullOrEmpty()) {
                             val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-                            builder.setMessage("InitialMap $city ?")
+                            builder.setMessage("$city ?")
                             builder.setPositiveButton(getString(R.string.Save)) { dialog, it ->
                                 val lat = latLng.latitude
                                 val lng = latLng.longitude

@@ -1,17 +1,24 @@
 package com.example.weathertracker
 
+import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.google.protobuf.Value
 import java.text.SimpleDateFormat
+import android.content.res.Resources
+
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
+
+
 import java.util.*
 
 object Constants {
-   const val HOME_DESTINATIO = "homeDestination"
+    const val LOCATION_SOURCE: String = "map"
+    const val HOME_DESTINATIO = "homeDestination"
     const val isInitializedTag = "INIT_STATE"
     const val PREFERENCE_NAME = "my_prefs"
     const val Lat_KEY = "latitude"
@@ -63,14 +70,11 @@ object Constants {
         return formatter.format(zonedDateTime)
         }
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getDay(timestamp:Long):String{
-        val instant = Instant.ofEpochSecond(timestamp)
-        val zoneId = ZoneId.systemDefault()
-        val zonedDateTime = instant.atZone(zoneId)
-        val localDate = zonedDateTime.toLocalDate()
-        val dayName:String = localDate.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
-        return dayName
-    }
+    fun getDay(dt: Int,lang:String): String {
+        val format = SimpleDateFormat("E",Locale(lang))
+        val date = Date(dt.toLong() * 1000)
+        return format.format(date)
+        }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getDayWithSpecificFormat():String{
@@ -78,6 +82,13 @@ object Constants {
         val formatter = DateTimeFormatter.ofPattern("EEE,d MMM")
         val formattedDate = localDate.format(formatter)
         return formattedDate
+    }
+    fun showNoNetworkDialog(context: Context){
+        val resources = context.resources
+        val builder = androidx.appcompat.app.AlertDialog.Builder(context)
+        builder.setMessage(resources.getString(R.string.no_network_connection))
+        val dialog = builder.create()
+        dialog.show()
     }
 
 

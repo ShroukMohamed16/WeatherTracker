@@ -2,11 +2,15 @@ package com.example.weathertracker.home.viewmodel
 
 import android.content.SharedPreferences
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.weathertracker.ApiState
+import com.example.weathertracker.favorite.HomeRoomState
+import com.example.weathertracker.favorite.RoomState
 import com.example.weathertracker.model.MyResponse
 import com.example.weathertracker.model.RepositoryInterface
+import com.example.weathertracker.model.WeatherEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -18,21 +22,44 @@ class HomeViewModel(private val repositoryInterface: RepositoryInterface):ViewMo
 
     val weather :StateFlow<ApiState> = mutableWeather
 
+    private val mutableWeatherFromRoom:MutableStateFlow<HomeRoomState> = MutableStateFlow(HomeRoomState.Loading)
+
+    val weatherFromRoom :StateFlow<HomeRoomState> = mutableWeatherFromRoom
 
 
-     fun getWeatherFromRetrofit(lat:Double, lon:Double,units:String, lang:String,apiKey:String) {
+    fun getWeatherFromRetrofit(lat:Double, lon:Double,units:String, lang:String,apiKey:String) {
         viewModelScope.launch(Dispatchers.IO) {
-            repositoryInterface.getWeather(lat, lon, units,lang,apiKey)
-                ?.catch { e ->
-                    mutableWeather.value = ApiState.Failure(e)
-                }
-                ?.collect{ myWeather ->
-                    Log.i(TAG, "getWeatherFromRetrofit: data collected")
-                    mutableWeather.value = ApiState.Success(myWeather)
-                    Log.i(TAG, "getWeatherFromRetrofit: data collected ${myWeather.timezone}")
+            repositoryInterface.getWeather(lat, lon, units, lang, apiKey)
+                    ?.catch { e->
+                        mutableWeather.value= ApiState.Failure(e)
+                    }
+                    ?.collect{ response->
+                        mutableWeather.value = ApiState.Success(response)
 
+                    }
+            }
+    }
+
+    fun insertWeatherDataToRoom(weather:WeatherEntity){
+        viewModelScope.launch(Dispatchers.IO){
+            repositoryInterface.insertWeatherToRoom(weather)
+        }
+    }
+    fun getWeatherDataFromRoom(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repositoryInterface.getWeatherFromRoom()
+                ?.catch { e->
+                    mutableWeatherFromRoom.value= HomeRoomState.Failure(e)
+                }
+                ?.collect{ response->
+                       if(response == null){
+                           mutableWeatherFromRoom.value= HomeRoomState.Failure(Throwable())
+                       }else {
+                           mutableWeatherFromRoom.value = HomeRoomState.Success(response)
+                       }
                 }
         }
+
     }
 
 }

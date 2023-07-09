@@ -3,6 +3,8 @@ package com.example.weathertracker.db
 import androidx.room.*
 import com.example.weathertracker.model.Alarm
 import com.example.weathertracker.model.FavoriteItem
+import com.example.weathertracker.model.MyResponse
+import com.example.weathertracker.model.WeatherEntity
 import kotlinx.coroutines.flow.Flow
 @Dao
 interface DAO {
@@ -27,6 +29,13 @@ interface DAO {
 
         @Delete
         suspend fun deleteAlarm(alarm: Alarm)
+
+        //For Weather
+       @Insert(onConflict = OnConflictStrategy.REPLACE)
+        suspend fun insertWeather(weatherEntity: WeatherEntity)
+
+        @Query("SELECT * FROM weather")
+        fun getWeather(): Flow<WeatherEntity>?
 
 
 

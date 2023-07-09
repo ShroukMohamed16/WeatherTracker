@@ -4,10 +4,12 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.weathertracker.model.Alarm
-import com.example.weathertracker.model.FavoriteItem
+import androidx.room.TypeConverters
+import com.example.weathertracker.model.*
 
-@Database(entities = [FavoriteItem::class, Alarm::class], version = 9)
+@Database(entities = [FavoriteItem::class, Alarm::class,WeatherEntity::class], version = 2)
+@TypeConverters(TypeConverter::class)
+
 abstract class WeatherDataBase:RoomDatabase(){
         abstract fun getDao(): DAO
         companion object {

@@ -56,4 +56,12 @@ class Repository(private var remoteSource: RemoteSource,var localSource: LocalSo
     override suspend fun deleteAlarmFromRoom(alarm: Alarm) {
         localSource.deleteFromAlarms(alarm)
     }
+
+   override suspend fun insertWeatherToRoom(weatherEntity: WeatherEntity) {
+        localSource.insertToWeather(weatherEntity)
+    }
+
+    override fun getWeatherFromRoom(): Flow<WeatherEntity>? {
+        return localSource.getFromWeather()
+    }
 }

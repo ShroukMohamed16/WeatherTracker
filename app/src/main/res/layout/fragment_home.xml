@@ -5,9 +5,6 @@
 
     <data>
         <variable
-            name="myResponse"
-            type="com.example.weathertracker.model.MyResponse" />
-        <variable
             name="hourAdapter"
             type="com.example.weathertracker.home.view.HourAdapter" />
         <variable
@@ -78,7 +75,7 @@
                     android:gravity="center"
                     android:text="@string/we_can_t_fetch_your_location"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/location_icon"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -126,6 +123,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:layout_margin="25dp"
@@ -140,7 +138,7 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="5dp"
                     android:gravity="center"
-                    android:text="@{myResponse.component5().component14().get(0).description}"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="30sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -151,7 +149,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:fontFamily="serif"
-                    android:text="@{String.valueOf(myResponse.component5().component4()) +'°'}"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold"
@@ -165,7 +163,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:fontFamily="serif"
-                    android:text="@string/c"
+                    android:text="@string/celisus"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/white"
                     android:textSize="30sp"
@@ -201,7 +199,7 @@
                     android:id="@+id/wind_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(myResponse.component5().component12())}"
+                    android:text=""
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toStartOf="@id/wind_unit"
                     app:layout_constraintHorizontal_bias="0.437"
@@ -245,7 +243,7 @@
                     android:id="@+id/cloud_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(myResponse.component5().component10()) + '%'}"
+                    android:text=""
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="@+id/cloud_icon"
                     app:layout_constraintStart_toStartOf="@+id/cloud_icon"
@@ -278,7 +276,7 @@
                     android:id="@+id/pressure_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(myResponse.component5().component6()) +'h'+'p'+'a'}"
+                    android:text=""
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="@+id/pressure_icon"
                     app:layout_constraintHorizontal_bias="0.457"
@@ -311,7 +309,7 @@
                     android:id="@+id/humidity_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(myResponse.component5().component7()) + '%'}"
+                    android:text=""
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="@+id/humidity_icon"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -345,7 +343,7 @@
                     android:id="@+id/ultra_violet_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(myResponse.component5().component9())}"
+                    android:text=""
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="@+id/ultraviolet_icon"
                     app:layout_constraintStart_toStartOf="@+id/ultraviolet_icon"
@@ -377,7 +375,7 @@
                     android:id="@+id/visibility_value"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(myResponse.component5().component11()) + 'm'}"
+                    android:text=""
                     android:textColor="@color/white"
                     app:layout_constraintEnd_toEndOf="@+id/visibility_icon"
                     app:layout_constraintStart_toStartOf="@+id/visibility_icon"

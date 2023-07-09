@@ -3,6 +3,8 @@ package com.example.weathertracker.db
 import android.content.Context
 import com.example.weathertracker.model.Alarm
 import com.example.weathertracker.model.FavoriteItem
+import com.example.weathertracker.model.MyResponse
+import com.example.weathertracker.model.WeatherEntity
 import kotlinx.coroutines.flow.Flow
 
 class ConcreteLocalSource(context: Context):LocalSource {
@@ -34,6 +36,14 @@ class ConcreteLocalSource(context: Context):LocalSource {
 
     override suspend fun deleteFromAlarms(alarm: Alarm) {
         dao.deleteAlarm(alarm)
+    }
+
+  override suspend fun insertToWeather(weatherEntity: WeatherEntity) {
+        dao.insertWeather(weatherEntity)
+    }
+
+    override fun getFromWeather(): Flow<WeatherEntity>? {
+        return dao.getWeather()
     }
 
 }

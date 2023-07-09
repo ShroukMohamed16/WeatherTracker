@@ -42,7 +42,7 @@
     <string name="we_can_t_fetch_your_location">We Can’t fetch your location</string>
     <string name="please_allow_weather_to_access_your_location">Please allow Weather to access your location</string>
     <string name="m_s">m/s</string>
-    <string name="c">C</string>
+    <string name="c">°C</string>
     <string name="no_places">No Places</string>
     <string name="no_alerts">No Alerts</string>
     <string name="save">save</string>
@@ -51,8 +51,8 @@
     <string name="notification_enabled">Notification Enabled</string>
     <string name="Save">Save</string>
     <string name="no">No</string>
-    <string name="f">F</string>
-    <string name="k">K</string>
+    <string name="f">°F</string>
+    <string name="k">°K</string>
     <string name="favorite">Favorite</string>
     <string name="home">Home</string>
     <string name="settings">Settings</string>
@@ -61,5 +61,7 @@
     <string name="end_date">end date</string>
     <string name="start_time">start time</string>
     <string name="start_date">start date</string>
+    <string name="no_network_connection">" No Network Connection "</string>
+    <string name="celisus">°C</string>
 
 </resources>

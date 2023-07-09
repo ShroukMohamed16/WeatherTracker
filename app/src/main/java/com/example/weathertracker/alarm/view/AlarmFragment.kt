@@ -45,7 +45,17 @@ class AlarmFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_alarm, container, false)
         binding.lifecycleOwner = this
         myAlarmAdapter = AlarmAdapter { alarm: Alarm ->
-            alarmViewModel.deleteAlarm(alarm)
+            val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+            builder.setMessage("Are you sure for delete this item ?")
+            builder.setPositiveButton("Ok") { dialog, it ->
+                alarmViewModel.deleteAlarm(alarm)
+                Toast.makeText(requireContext(), "item deleted", Toast.LENGTH_SHORT).show()
+            }
+            builder.setNegativeButton("Cancel") { dialog, which ->
+                dialog.dismiss()
+            }
+            val dialog = builder.create()
+            dialog.show()
         }
          return binding.root
     }

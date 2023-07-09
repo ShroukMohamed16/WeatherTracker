@@ -92,7 +92,10 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
                 ))
                 dismiss()
             }else{
-                Toast.makeText(requireContext(),"Please enter all Dates and Times",Toast.LENGTH_LONG)
+                val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                builder.setMessage("Please fill all data")
+                val dialog = builder.create()
+                dialog.show()
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.example.weathertracker
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -9,21 +10,18 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
 import androidx.navigation.ui.NavigationUI
 import com.google.android.material.navigation.NavigationView
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    lateinit var drawerLayout: DrawerLayout
-    lateinit var navigationView: NavigationView
-
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var navigationView: NavigationView
+    lateinit var sharedPreferences: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         initUI()
-
-        val language = getSharedPreferences(Constants.PREFERENCE_NAME,Context.MODE_PRIVATE).getString(Constants.LOCAL_LANGUAGE, "en")
-        val locale = language?.let { Locale(it) }
-        resources.configuration.setLocale(locale)
-
+        sharedPreferences = getSharedPreferences(Constants.PREFERENCE_NAME,Context.MODE_PRIVATE)
+        sharedPreferences.edit().putBoolean(Constants.isInitializedTag, true).apply()
 
         val  actionBar = supportActionBar
         if(actionBar != null) {
