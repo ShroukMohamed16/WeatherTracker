@@ -1,6 +1,7 @@
 package com.example.weathertracker
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
@@ -34,6 +35,12 @@ class MainActivity : AppCompatActivity() {
 
 
 
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val fragment = supportFragmentManager.findFragmentById(R.id.nav_host)
+        fragment?.onActivityResult(requestCode, resultCode, data)
     }
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if(item.itemId == android.R.id.home) {

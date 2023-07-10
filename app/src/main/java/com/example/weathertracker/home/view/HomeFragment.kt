@@ -2,9 +2,7 @@ package com.example.weathertracker.home.view
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.location.Geocoder
@@ -21,6 +19,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.registerReceiver
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
@@ -58,12 +57,12 @@ class HomeFragment : Fragment() {
     lateinit var hourAdapter: HourAdapter
     lateinit var dayAdapter: DayAdapter
     var homeDestination:String? = "initial"
-    lateinit var snackbar: Snackbar
     lateinit var weatherEntity:WeatherEntity
     private lateinit var myContext: Context
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private lateinit var editor: SharedPreferences.Editor
     lateinit var  locationCallback:LocationCallback
+    private var connectivityReceiver: BroadcastReceiver? = null
     var lat:String?= ""
     var lon:String? = ""
     var lang:String? = ""
@@ -75,9 +74,19 @@ class HomeFragment : Fragment() {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        checkNetworkAtRuntime()
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         myContext = context
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity?.unregisterReceiver(connectivityReceiver)
     }
 
 
@@ -117,9 +126,9 @@ class HomeFragment : Fragment() {
                         binding.progressBar.visibility = View.GONE
                         binding.constraint.visibility = View.VISIBLE
                         binding.noPermissionConstraint.visibility = View.GONE
-                        binding.homeTemperatureUnit.text = sharedPreferences.getString("unitCharacter","C")
-                        binding.homeDay.text = Constants.getDayWithSpecificFormat()
-                        hourAdapter = HourAdapter(result.data.timezone)
+                        binding.homeTemperatureUnit.text = sharedPreferences.getString(Constants.UNITS_CHARACTER,"C")
+                        binding.homeDay.text = Constants.getDayWithSpecificFormat(lang!!)
+                        hourAdapter = HourAdapter(result.data.timezone,lang!!)
                         dayAdapter = DayAdapter(lang!!)
                         binding.hourAdapter = hourAdapter
                         hourAdapter.submitList(result.data.hourly)
@@ -142,14 +151,14 @@ class HomeFragment : Fragment() {
                         )
 
                         //To Convert Wind Units
-                        if(sharedPreferences.getString("wind_units","mile")=="mile"
-                            && (sharedPreferences.getString("units","metric")=="metric" ||
-                                    sharedPreferences.getString("units","metric")=="standard"))
+                        if(sharedPreferences.getString(Constants.WIND_SPEED_UNIT,"mile")=="mile"
+                            && (sharedPreferences.getString(Constants.UNITS,"metric")=="metric" ||
+                                    sharedPreferences.getString(Constants.UNITS,"metric")=="standard"))
                         {
                             binding.windValue.text=(convertMpsToMph(result.data.current.windSpeed).toString())
                             binding.windUnit.text = getString(R.string.mile)
-                        }else if(sharedPreferences.getString("wind_units","mile")=="meter"
-                            && sharedPreferences.getString("units","metric")=="imperial")
+                        }else if(sharedPreferences.getString(Constants.WIND_SPEED_UNIT,"mile")=="meter"
+                            && sharedPreferences.getString(Constants.UNITS,"metric")=="imperial")
                         {
                             binding.windValue.text=(convertMPhToMps(result.data.current.windSpeed).toString())
                             binding.windUnit.text = getString(R.string.m_s)
@@ -186,9 +195,9 @@ class HomeFragment : Fragment() {
                         binding.progressBar.visibility = View.GONE
                         binding.constraint.visibility = View.VISIBLE
                         binding.noPermissionConstraint.visibility = View.GONE
-                        binding.homeTemperatureUnit.text = sharedPreferences.getString("unitCharacter","C")
-                        binding.homeDay.text = Constants.getDayWithSpecificFormat()
-                        hourAdapter = HourAdapter(result.data.timezone)
+                        binding.homeTemperatureUnit.text = sharedPreferences.getString(Constants.UNITS_CHARACTER,"C")
+                        binding.homeDay.text = Constants.getDayWithSpecificFormat(lang!!)
+                        hourAdapter = HourAdapter(result.data.timezone,lang!!)
                         dayAdapter = DayAdapter(lang!!)
                         binding.hourAdapter = hourAdapter
                         hourAdapter.submitList(result.data.hourly)
@@ -211,14 +220,14 @@ class HomeFragment : Fragment() {
                         )
 
                         //To Convert Wind Units
-                        if(sharedPreferences.getString("wind_units","mile")=="mile"
-                            && (sharedPreferences.getString("units","metric")=="metric" ||
-                                    sharedPreferences.getString("units","metric")=="standard"))
+                        if(sharedPreferences.getString(Constants.WIND_SPEED_UNIT,"mile")=="mile"
+                            && (sharedPreferences.getString(Constants.UNITS,"metric")=="metric" ||
+                                    sharedPreferences.getString(Constants.UNITS,"metric")=="standard"))
                         {
                             binding.windValue.text=(convertMpsToMph(result.data.current.windSpeed).toString())
                             binding.windUnit.text = getString(R.string.mile)
-                        }else if(sharedPreferences.getString("wind_units","mile")=="meter"
-                            && sharedPreferences.getString("units","metric")=="imperial")
+                        }else if(sharedPreferences.getString(Constants.WIND_SPEED_UNIT,"mile")=="meter"
+                            && sharedPreferences.getString(Constants.UNITS,"metric")=="imperial")
                         {
                             binding.windValue.text=(convertMPhToMps(result.data.current.windSpeed).toString())
                             binding.windUnit.text = getString(R.string.m_s)
@@ -270,13 +279,13 @@ class HomeFragment : Fragment() {
         if(homeDestination== "initial") {
             lat = sharedPreferences.getString(Constants.Lat_KEY, "33.44")
             lon = sharedPreferences.getString(Constants.Lon_Key, "94.04")
-            lang= sharedPreferences.getString("lang","en")
-            units= sharedPreferences.getString("units","metric")
+            lang= sharedPreferences.getString(Constants.LOCAL_LANGUAGE,"en")
+            units= sharedPreferences.getString(Constants.UNITS,"metric")
         }else{
             lat = sharedPreferences.getString(Constants.FAV_Lat_KEY, "33.44")
             lon = sharedPreferences.getString(Constants.FAV_Lon_Key, "94.04")
-            lang= sharedPreferences.getString("lang","en")
-            units= sharedPreferences.getString("units","metric")
+            lang= sharedPreferences.getString(Constants.LOCAL_LANGUAGE,"en")
+            units= sharedPreferences.getString(Constants.UNITS,"metric")
             requireActivity().getSharedPreferences(Constants.PREFERENCE_NAME,Context.MODE_PRIVATE)
                 .edit()
                 .putString(Constants.MAP_DESTINATION,"initial")
@@ -400,7 +409,6 @@ class HomeFragment : Fragment() {
                 } else {
                     val intent = Intent(context, MainActivity::class.java)
                     startActivity(intent)
-                    // context.finish()
                 }
             }
         }
@@ -413,6 +421,23 @@ class HomeFragment : Fragment() {
         } else {
             displayDataFromRoom()
         }
+    }
+    private fun checkNetworkAtRuntime()
+    {
+        val connectivityManager = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
+
+        connectivityReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val networkInfo = connectivityManager.activeNetworkInfo
+
+                if (networkInfo == null || !networkInfo.isConnected) {
+                    Snackbar.make(view!!, R.string.no_network_connection, Snackbar.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        activity?.registerReceiver(connectivityReceiver, intentFilter)
     }
 
 

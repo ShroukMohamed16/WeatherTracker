@@ -123,7 +123,6 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraint"
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="400dp"
                 android:layout_margin="25dp"
@@ -162,14 +161,14 @@
                     android:id="@+id/home_temperature_unit"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="serif"
                     android:text="@string/celisus"
-                    android:layout_marginStart="10dp"
                     android:textColor="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/home_temperature"
-                    app:layout_constraintStart_toEndOf="@id/home_temperature"
+                    app:layout_constraintEnd_toStartOf="@id/home_temperature"
                     app:layout_constraintTop_toTopOf="@+id/home_temperature"
                     app:layout_constraintVertical_bias="0.0" />
 

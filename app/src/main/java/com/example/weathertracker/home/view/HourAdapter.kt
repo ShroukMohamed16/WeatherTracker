@@ -12,7 +12,7 @@ import com.example.weathertracker.R
 import com.example.weathertracker.databinding.HourItemBinding
 import com.example.weathertracker.model.HourlyWeather
 
-class HourAdapter(var timeZone:String):ListAdapter<HourlyWeather, HourAdapter.HourlyViewHolder>(HourDiffUtil()) {
+class HourAdapter(var timeZone:String , var lang:String):ListAdapter<HourlyWeather, HourAdapter.HourlyViewHolder>(HourDiffUtil()) {
 
     lateinit var binding:HourItemBinding
     inner class HourlyViewHolder(var binding: HourItemBinding):RecyclerView.ViewHolder(binding.root)
@@ -26,7 +26,7 @@ class HourAdapter(var timeZone:String):ListAdapter<HourlyWeather, HourAdapter.Ho
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: HourlyViewHolder, position: Int) {
         val currentObject = getItem(position)
-        binding.hour.text=Constants.getTime(currentObject.dt, timeZone)
+        binding.hour.text=Constants.getTime(currentObject.dt, timeZone,lang)
         binding.hourTemperature.text = currentObject.temp.toString()+'°'
         binding.hourStateIcon.setImageResource(Constants.setIcon(currentObject.weather.get(0).icon))
     }

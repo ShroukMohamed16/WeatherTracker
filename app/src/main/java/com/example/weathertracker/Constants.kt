@@ -36,6 +36,10 @@ object Constants {
     const val CHANNEL_ID = "my_channel_id"
     const val NOTIFICATION_ID = 1
     const val LOCAL_LANGUAGE = "lang"
+    const val DRAW_OVER_OTHER_APPS_REQUEST_CODE = 5469
+    const val UNITS = "units"
+    const val UNITS_CHARACTER = "unitCharacter"
+    const val WIND_SPEED_UNIT = "wind_units"
 
 
     fun setIcon(icon:String):Int {
@@ -62,11 +66,12 @@ object Constants {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getTime(dt:Long, timeZone: String): String {
+    fun getTime(dt:Long, timeZone: String,lang: String): String {
         val instant = Instant.ofEpochSecond(dt)
         val zoneId = ZoneId.of(timeZone)
         val zonedDateTime = instant.atZone(zoneId)
-        val formatter = DateTimeFormatter.ofPattern("K:mm a")
+        val loc = Locale(lang)
+        val formatter = DateTimeFormatter.ofPattern("K:mm a").withLocale(loc)
         return formatter.format(zonedDateTime)
         }
     @RequiresApi(Build.VERSION_CODES.O)
@@ -77,9 +82,10 @@ object Constants {
         }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getDayWithSpecificFormat():String{
+    fun getDayWithSpecificFormat(lang:String):String{
         val localDate = LocalDate.now()
-        val formatter = DateTimeFormatter.ofPattern("EEE,d MMM")
+        val loc = Locale(lang)
+        val formatter = DateTimeFormatter.ofPattern("EEE,d MMM").withLocale(loc)
         val formattedDate = localDate.format(formatter)
         return formattedDate
     }

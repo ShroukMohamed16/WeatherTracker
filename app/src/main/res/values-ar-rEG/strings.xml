@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">"متابعة الطقس"</string>
+    <string name="app_name">" متتبع الطقس "</string>
     <string name="visibility">"الرؤية "</string>
     <string name="ultra_violet">الاشعة البنفسجية</string>
     <string name="humidity">الرطوبة</string>
@@ -59,4 +59,5 @@
     <string name="start_date">تاريخ البدء</string>
     <string name="no_network_connection">"لا يوجد اتصال بالانترنت "</string>
     <string name="celisus">°C</string>
+    <string name="display_on_apps">سماح الظهور على باقى التطبيقات ؟</string>
 </resources>

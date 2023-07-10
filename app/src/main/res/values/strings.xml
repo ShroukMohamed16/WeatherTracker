@@ -1,7 +1,5 @@
 <resources>
-    <string name="app_name">Weather Tracker</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="visibility">Visibility</string>
     <string name="ultra_violet">Ultra Violet</string>
     <string name="humidity">Humidity</string>
@@ -42,7 +40,7 @@
     <string name="we_can_t_fetch_your_location">We Can’t fetch your location</string>
     <string name="please_allow_weather_to_access_your_location">Please allow Weather to access your location</string>
     <string name="m_s">m/s</string>
-    <string name="c">°C</string>
+    <string name="c" translatable="false">°C</string>
     <string name="no_places">No Places</string>
     <string name="no_alerts">No Alerts</string>
     <string name="save">save</string>
@@ -51,8 +49,8 @@
     <string name="notification_enabled">Notification Enabled</string>
     <string name="Save">Save</string>
     <string name="no">No</string>
-    <string name="f">°F</string>
-    <string name="k">°K</string>
+    <string name="f" translatable="false">°F</string>
+    <string name="k" translatable="false">°K</string>
     <string name="favorite">Favorite</string>
     <string name="home">Home</string>
     <string name="settings">Settings</string>
@@ -63,5 +61,7 @@
     <string name="start_date">start date</string>
     <string name="no_network_connection">" No Network Connection "</string>
     <string name="celisus">°C</string>
+    <string name="display_on_apps">Display On Other Apps</string>
+    <string name="app_name">Weather Tracker</string>
 
 </resources>

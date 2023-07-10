@@ -35,19 +35,19 @@ import java.util.*
 
 private const val TAG = "SettingsFragment"
 class SettingsFragment : Fragment() {
-
+    var isRecreation:Boolean = false
     lateinit var binding: FragmentSettingsBinding
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editor:SharedPreferences.Editor
     lateinit var fusedLocationProviderClient:FusedLocationProviderClient
     lateinit var  locationCallback:LocationCallback
     lateinit var myContext:Context
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPreferences = requireActivity().getSharedPreferences(Constants.PREFERENCE_NAME,Context.MODE_PRIVATE)
         editor = sharedPreferences.edit()
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
     }
 
     override fun onAttach(context: Context) {
@@ -66,95 +66,83 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.langRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
-            when (i) {
-                R.id.arabicRadioBtn -> {
-                    editor.putString(Constants.LOCAL_LANGUAGE, "ar").apply()
-                    setLanguage("ar")
-                   // activity!!.recreate()
+        getSettings()
+        
+        binding.arabicRadioBtn.setOnClickListener{
+            binding.arabicRadioBtn.isChecked = true
+            editor.putString(Constants.LOCAL_LANGUAGE, "ar").apply()
+            setLanguage(requireContext(), "ar")
+            requireActivity().recreate()
+        }
+        binding.englishRadioBtn.setOnClickListener {
+            binding.englishRadioBtn.isChecked = true
+            editor.putString(Constants.LOCAL_LANGUAGE, "en").apply()
+            setLanguage(requireContext(), "en")
+            requireActivity().recreate()
+        }
 
-                }
-                R.id.english_radio_btn -> {
-                    editor.putString(Constants.LOCAL_LANGUAGE, "en").apply()
-                    setLanguage("en")
-                    activity!!.recreate()
+        binding.enableRadioBtn.setOnClickListener {
+            binding.enableRadioBtn.isChecked = true
+            editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,true)
+            Toast.makeText(requireContext(),getString(R.string.notification_enabled),Toast.LENGTH_LONG).show()
+        }
+        binding.disableRadioBtn.setOnClickListener{
+            binding.disableRadioBtn.isChecked = true
+            editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,false)
+            Toast.makeText(requireContext(),getString(R.string.notification_disable),Toast.LENGTH_LONG).show()
 
-                }
-            }
-            }
-        binding.notfRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
-            when (i) {
-                R.id.enable_radio_btn -> {
+        }
 
-                    editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,true)
-                    Toast.makeText(requireContext(),getString(R.string.notification_enabled),Toast.LENGTH_LONG).show()
-
-
-                }
-                R.id.disable_radio_btn -> {
-                    editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,false)
-                    Toast.makeText(requireContext(),getString(R.string.notification_disable),Toast.LENGTH_LONG).show()
-
-                }
+        binding.gpsRadioBtn.setOnClickListener {
+            binding.gpsRadioBtn.isChecked = true
+            if(isNetworkConnected()) {
+                editor.putString(Constants.LOCATION_SOURCE,"gps").apply()
+                getLastLocation()
+            }else{
+                Constants.showNoNetworkDialog(myContext)
             }
         }
-        binding.locRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
-            when (i) {
-                R.id.gps_radio_btn -> {
-                    if(isNetworkConnected()) {
-                        editor.putString(Constants.LOCATION_SOURCE,"gps").apply()
-                        getLastLocation()
-                    }else{
-                        Constants.showNoNetworkDialog(myContext)
-                    }
-                }
-                R.id.map_radio_btn -> {
-                    if(isNetworkConnected()) {
-                        editor.putString(Constants.LOCATION_SOURCE,"map").apply()
-                        val intent = Intent(myContext, MapActivity::class.java)
-                        startActivity(intent)
-                    }else{
-                        Constants.showNoNetworkDialog(myContext)
-                    }
-                }
-            }
-        }
-        binding.tempRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
-            when (i) {
-                R.id.celsius_radio_btn -> {
-                    editor.putString("units", "metric").apply()
-                    editor.putString("unitCharacter",getString(R.string.c)).apply()
-                }
-                R.id.fahren_radio_btn -> {
-                    editor.putString("units", "imperial").apply()
-                    editor.putString("unitCharacter",getString(R.string.f)).apply()
-
-
-                }
-                R.id.kelvin_radio_btn ->{
-                    editor.putString("units", "standard").apply()
-                    editor.putString("unitCharacter",getString(R.string.k)).apply()
-
-
-                }
-            }
-        }
-        binding.windRadioGroup.setOnCheckedChangeListener { radioGroup, i ->
-            when (i) {
-                R.id.meter_radio_btn -> {
-                    editor.putString("wind_units", "meter").apply()
-                }
-                R.id.mile_radio_btn -> {
-                    editor.putString("wind_units", "mile").apply()
-
-                }
-
+        binding.mapRadioBtn.setOnClickListener {
+            binding.mapRadioBtn.isChecked = true
+            if(isNetworkConnected()) {
+                editor.putString(Constants.LOCATION_SOURCE,"map").apply()
+                val intent = Intent(myContext, MapActivity::class.java)
+                startActivity(intent)
+            }else{
+                Constants.showNoNetworkDialog(myContext)
             }
         }
 
-    }
+       binding.celsiusRadioBtn.setOnClickListener{
+            binding.celsiusRadioBtn.isChecked = true
+            editor.putString(Constants.UNITS, "metric").apply()
+            editor.putString(Constants.UNITS_CHARACTER,getString(R.string.c)).apply()
+        }
+       binding.fahrenRadioBtn.setOnClickListener{
+            binding.fahrenRadioBtn.isChecked = true
+            editor.putString(Constants.UNITS, "imperial").apply()
+            editor.putString(Constants.UNITS_CHARACTER,getString(R.string.f)).apply()
+        }
+       binding.kelvinRadioBtn.setOnClickListener{
+           binding.kelvinRadioBtn.isChecked = true
+           editor.putString(Constants.UNITS, "standard").apply()
+           editor.putString(Constants.UNITS_CHARACTER,getString(R.string.k)).apply()
+       }
+        binding.meterRadioBtn.setOnClickListener {
+            binding.meterRadioBtn.isChecked = true
+            editor.putString(Constants.WIND_SPEED_UNIT, "meter").apply()
+        }
+        binding.mileRadioBtn.setOnClickListener{
+            binding.mileRadioBtn.isChecked = true
+            editor.putString(Constants.WIND_SPEED_UNIT, "mile").apply()
 
-   /* fun  setLanguage(context: Context, language:String) {
+        }
+
+}
+
+
+
+    private fun  setLanguage(context: Context, language:String) {
         val locale = Locale(language)
         val config = context.resources.configuration
         config.locale= Locale(language)
@@ -162,18 +150,7 @@ class SettingsFragment : Fragment() {
         config.setLayoutDirection(Locale(language))
         context.resources.updateConfiguration(config, context.resources.displayMetrics)
         context.createConfigurationContext(config)
-    }*/
-   private fun setLanguage(language: String) {
-       val configuration = resources.configuration
-       configuration.locale = Locale(language)
-       Locale.setDefault(Locale(language))
-       configuration.setLayoutDirection(Locale(language))
-       // update configuration change
-       resources.updateConfiguration(configuration, resources.displayMetrics)
-       // notify configuration change
-       onConfigurationChanged(configuration)
-       requireActivity().recreate()
-   }
+    }
 
 
     private fun getLastLocation() {
@@ -273,16 +250,45 @@ class SettingsFragment : Fragment() {
                 } else {
                     val intent = Intent(context, MainActivity::class.java)
                     startActivity(intent)
-                    // context.finish()
                 }
             }
         }
     }
 
-    fun isNetworkConnected(): Boolean {
+    private fun isNetworkConnected(): Boolean {
         val connectivityManager = requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnected
+    }
+    fun getSettings() {
+        if (sharedPreferences.getString(Constants.LOCATION_SOURCE, "map") == "map")
+            binding.mapRadioBtn.isChecked = true
+        else
+            binding.gpsRadioBtn.isChecked = true
+
+        if (sharedPreferences.getBoolean(Constants.NOTIFICATIONS_IS_ENABLED, false))
+            binding.enableRadioBtn.isChecked = true
+        else
+            binding.disableRadioBtn.isChecked = true
+
+        if (sharedPreferences.getString(Constants.LOCAL_LANGUAGE,"en") == "ar")
+            binding.arabicRadioBtn.isChecked = true
+        else
+            binding.englishRadioBtn.isChecked = true
+
+        if(sharedPreferences.getString(Constants.UNITS,"metric")=="metric")
+            binding.celsiusRadioBtn.isChecked = true
+        else if(sharedPreferences.getString(Constants.UNITS,"metric") == "imperial")
+            binding.fahrenRadioBtn.isChecked = true
+        else
+            binding.kelvinRadioBtn.isChecked = true
+
+        if(sharedPreferences.getString(Constants.WIND_SPEED_UNIT,"meter")=="meter")
+            binding.meterRadioBtn.isChecked = true
+        else
+            binding.mileRadioBtn.isChecked = true
+
+
     }
 
 }

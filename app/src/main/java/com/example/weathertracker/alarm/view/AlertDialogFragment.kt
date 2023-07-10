@@ -2,7 +2,12 @@ package com.example.weathertracker.alarm.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +15,13 @@ import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.TimePicker
 import android.widget.Toast
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import com.example.weathertracker.Constants
 import com.example.weathertracker.R
 import com.example.weathertracker.alarm.viewmodel.AlarmViewModel
 import com.example.weathertracker.alarm.viewmodel.AlarmViewModelFactory
@@ -67,32 +75,56 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.to.setOnClickListener {
             type = "end"
             getDateTimeCalender()
 
-            val datePickerDialog = DatePickerDialog(requireContext(),this,year,month,day)
-            datePickerDialog.datePicker.minDate=calender.timeInMillis
+            val datePickerDialog = DatePickerDialog(requireContext(), this, year, month, day)
+            datePickerDialog.datePicker.minDate = calender.timeInMillis
             datePickerDialog.show()
         }
         binding.from.setOnClickListener {
             type = "start"
             getDateTimeCalender()
 
-            val datePickerDialog = DatePickerDialog(requireContext(),this,year,month,day)
-                datePickerDialog.datePicker.minDate=calender.timeInMillis
-                datePickerDialog.show()
+            val datePickerDialog = DatePickerDialog(requireContext(), this, year, month, day)
+            datePickerDialog.datePicker.minDate = calender.timeInMillis
+            datePickerDialog.show()
         }
+
+
+
+
+
         binding.addAlertDialog.setOnClickListener {
             if(startDateInMillis != null && endDateInMillis!=null&& startTimeInMillis!=null && endTimeInMillis!=null){
-                alarmViewModel.insertAlarm(Alarm(startTimeInMillis!!,
-                    endTimeInMillis!!, startDateInMillis!!, endDateInMillis!!
-                ))
+                if (binding.alarmRadioBtn.isChecked) {
+                    if (!Settings.canDrawOverlays(requireContext())) {
+                        val builder = AlertDialog.Builder(requireContext())
+                        builder.setMessage("Allow to Display on Other Apps")
+                        builder.setPositiveButton(R.string.ok){ dialog,it ->
+                                val intent = Intent(
+                                    Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                    Uri.parse("package:${requireContext().packageName}")
+                                )
+                                startActivityForResult(
+                                    intent,
+                                    Constants.DRAW_OVER_OTHER_APPS_REQUEST_CODE
+                                )
+                            }
+                        builder.setNegativeButton(R.string.no){dialog , which ->
+                            }
+                            val dialog = builder.create()
+                            dialog.show()
+                    }
+                }
+                alarmViewModel.insertAlarm(Alarm(startTimeInMillis!!, endTimeInMillis!!, startDateInMillis!!, endDateInMillis!!))
                 dismiss()
             }else{
-                val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage("Please fill all data")
                 val dialog = builder.create()
                 dialog.show()
@@ -108,7 +140,22 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
         minute =  calender.get(Calendar.MINUTE)
 
     }
+    @Deprecated("Deprecated in Java")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+        if (requestCode == Constants.DRAW_OVER_OTHER_APPS_REQUEST_CODE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(requireContext(),"Generated",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(requireContext(),"Not Generated",Toast.LENGTH_LONG).show()
+            }
+        }
+    }
 
     private fun convertDate(calender: Calendar) {
         val formatDate = " EEE,d MMM"
