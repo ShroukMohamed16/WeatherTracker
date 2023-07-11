@@ -1,14 +1,9 @@
 package com.example.weathertracker.home.viewmodel
 
-import android.content.SharedPreferences
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.weathertracker.ApiState
+import com.example.weathertracker.home.ApiState
 import com.example.weathertracker.favorite.HomeRoomState
-import com.example.weathertracker.favorite.RoomState
-import com.example.weathertracker.model.MyResponse
 import com.example.weathertracker.model.RepositoryInterface
 import com.example.weathertracker.model.WeatherEntity
 import kotlinx.coroutines.Dispatchers

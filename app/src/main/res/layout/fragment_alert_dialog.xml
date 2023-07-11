@@ -18,7 +18,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#6AD2D2D2">
+            android:background="#6AFFFFFF">
 
             <TextView
                 android:id="@+id/from"
@@ -63,12 +63,12 @@
                 <TextView
                     android:id="@+id/start_day"
                     style="@style/settingsText"
-                    android:textStyle="normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="@string/start_date"
+                    android:textStyle="normal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -118,12 +118,12 @@
                 <TextView
                     android:id="@+id/end_day"
                     style="@style/settingsText"
-                    android:textStyle="normal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:text="@string/end_date"
+                    android:textStyle="normal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -149,8 +149,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="50dp"
-                    android:text="@string/alarm"
                     android:checked="true"
+                    android:text="@string/alarm"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -167,17 +167,32 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/add_alert_dialog"
-                android:layout_width="200dp"
+                android:layout_width="130dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="@color/centerColor"
                 android:text="@string/add"
                 android:textColor="@color/white"
                 app:cornerRadius="15dp"
-                android:backgroundTint="@color/centerColor"
-                app:layout_constraintEnd_toEndOf="@+id/lang_radioGroup"
-                app:layout_constraintHorizontal_bias="0.52"
-                app:layout_constraintStart_toStartOf="@+id/lang_radioGroup"
+                app:layout_constraintEnd_toStartOf="@+id/cancel_alert_dialog"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lang_radioGroup" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel_alert_dialog"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/centerColor"
+                android:text="@string/cancel"
+                android:textColor="@color/white"
+                app:cornerRadius="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/add_alert_dialog"
+                app:layout_constraintTop_toTopOf="@+id/add_alert_dialog"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

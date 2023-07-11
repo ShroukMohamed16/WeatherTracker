@@ -63,5 +63,9 @@
     <string name="celisus">°C</string>
     <string name="display_on_apps">Display On Other Apps</string>
     <string name="app_name">Weather Tracker</string>
+    <string name="cancel">Cancel</string>
+    <string name="beautiful_weather">The Beautiful Weather</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

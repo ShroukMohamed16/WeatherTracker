@@ -4,7 +4,6 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.*
 import android.content.pm.PackageManager
-import android.graphics.drawable.Drawable
 import android.location.Geocoder
 import android.location.LocationManager
 import android.net.ConnectivityManager
@@ -19,17 +18,14 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.registerReceiver
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentContainerView
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import com.example.weathertracker.ApiState
+import com.example.weathertracker.home.ApiState
 import com.example.weathertracker.Constants
 import com.example.weathertracker.MainActivity
 import com.example.weathertracker.R
 import com.example.weathertracker.databinding.FragmentHomeBinding
-import com.example.weathertracker.databinding.FragmentInitialDialogBinding
 import com.example.weathertracker.db.ConcreteLocalSource
 import com.example.weathertracker.favorite.HomeRoomState
 import com.example.weathertracker.home.viewmodel.HomeViewModel
@@ -39,11 +35,8 @@ import com.example.weathertracker.model.WeatherEntity
 import com.example.weathertracker.network.ApiClient
 import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 private const val TAG = "HomeFragment"

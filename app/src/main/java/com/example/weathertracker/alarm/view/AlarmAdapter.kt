@@ -41,10 +41,14 @@ class AlarmAdapter(private var myListener:(Alarm)->Unit):ListAdapter<Alarm, Alar
         return sdf.format(date)
     }
     fun formatTime(milliseconds: Long, format: String): String {
-        val sdf = SimpleDateFormat(format, Locale.getDefault())
-        sdf.timeZone = TimeZone.getTimeZone("UTC")
-        val date = Date(milliseconds)
-        return sdf.format(date)
+        val current_date = Date(milliseconds)
+        val sdf = SimpleDateFormat(format)
+        val formattedTime: String = sdf.format(current_date)
+
+       // val sdf = SimpleDateFormat(format, Locale.getDefault())
+       // sdf.timeZone = TimeZone.getTimeZone("UTC")
+        //val date = Date(milliseconds)
+        return formattedTime
     }
 
 }
