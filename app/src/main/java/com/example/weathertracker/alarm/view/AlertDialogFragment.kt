@@ -122,6 +122,7 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
                             startDateInMillis!!,
                             endDateInMillis!!
                         )
+
                         checkAlarmOrNotification()
                         Log.i(TAG, "onViewCreated: Alarm or Notification Checked")
                         lifecycleScope.launch {
@@ -149,9 +150,18 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
                                             .putLong("startTimeOfAlert", startTimeInMillis!!)
                                             .build()
 
+                                        val dateFormat =
+                                            SimpleDateFormat("HH:mm a") 
+
+                                        val fullDate = dateFormat.format(startTimeInMillis)
+                                        val currentTime = dateFormat.format(System.currentTimeMillis())
+
+                                        Log.i(TAG, "onViewCreated: $fullDate $currentTime")
+                                        Log.i(TAG, "onViewCreated: ${startTimeInMillis!! - System.currentTimeMillis()}")
+                                        Log.i(TAG, "onViewCreated: ${startTimeInMillis!! - Calendar.getInstance().timeInMillis}")
                                         val request = OneTimeWorkRequestBuilder<myWorker>()
                                             .setInitialDelay(
-                                                startTimeInMillis!! - Calendar.getInstance().timeInMillis,
+                                                startTimeInMillis!! - System.currentTimeMillis(),
                                                 TimeUnit.MILLISECONDS
                                             )
                                             .setInputData(requestData)
@@ -168,7 +178,6 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
                                             .enqueue(request)
                                         Log.i(TAG, "onViewCreated: requestCreated")
 
-                                        //dismiss()
                                     }
                                     else -> {
                                         Toast.makeText(
@@ -279,7 +288,8 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
         calendar.set(Calendar.MINUTE, minute)
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
-        return calendar.timeInMillis % (24 * 60 * 60 * 1000) // Modulo to get milliseconds since midnight
+        return calendar.timeInMillis
+       // return calendar.timeInMillis % (24 * 60 * 60 * 1000) // Modulo to get milliseconds since midnight
     }
     private fun checkDisplayOverlayerPermission(){
         val builder = AlertDialog.Builder(requireContext())

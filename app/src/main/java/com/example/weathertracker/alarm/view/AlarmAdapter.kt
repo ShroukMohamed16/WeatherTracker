@@ -1,6 +1,5 @@
 package com.example.weathertracker.alarm.view
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -44,10 +43,6 @@ class AlarmAdapter(private var myListener:(Alarm)->Unit):ListAdapter<Alarm, Alar
         val current_date = Date(milliseconds)
         val sdf = SimpleDateFormat(format)
         val formattedTime: String = sdf.format(current_date)
-
-       // val sdf = SimpleDateFormat(format, Locale.getDefault())
-       // sdf.timeZone = TimeZone.getTimeZone("UTC")
-        //val date = Date(milliseconds)
         return formattedTime
     }
 

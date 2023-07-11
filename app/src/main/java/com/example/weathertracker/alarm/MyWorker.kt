@@ -45,17 +45,17 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
         alarm = Gson().fromJson(strAlertGson, Alarm::class.java)
 
         val current_date = Date(currentTimeMillis)
-        val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm")
+        val sdf = SimpleDateFormat("HH:mm")
         val formattedTime: String = sdf.format(current_date)
 
-        val start_date = Date(alarm!!.startDate)
+        val start_date = Date(alarm!!.startTime)
         val startFormatted = sdf.format(start_date)
 
-        val end_date = Date(alarm!!.endDate)
+        val end_date = Date(alarm!!.endTime)
         val endFormatted = sdf.format(end_date)
 
 
-        Log.i(TAG, "startWorker: $formattedTime $startFormatted ")
+        Log.i(TAG, "startWorker: $formattedTime $startFormatted $endFormatted")
         if (formattedTime >= startFormatted && formattedTime <= endFormatted) {
             val alarmOrNotification = inputData.getString("AlarmOrNotification")
             icon = inputData.getString("icon")!!

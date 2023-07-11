@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import com.example.weathertracker.R
 import com.example.weathertracker.databinding.FragmentNotificationBinding
 
 
-class NotificationFragment : Fragment() {
+class NotificationFragment : DialogFragment() {
    lateinit var binding: FragmentNotificationBinding
 
     override fun onCreateView(
