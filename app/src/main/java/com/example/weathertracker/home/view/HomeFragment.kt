@@ -119,7 +119,7 @@ class HomeFragment : Fragment() {
                         binding.progressBar.visibility = View.GONE
                         binding.constraint.visibility = View.VISIBLE
                         binding.noPermissionConstraint.visibility = View.GONE
-                        binding.homeTemperatureUnit.text = sharedPreferences.getString(Constants.UNITS_CHARACTER,"C")
+                        binding.homeTemperatureUnit.text = sharedPreferences.getString(Constants.UNITS_CHARACTER,"°C")
                         binding.homeDay.text = Constants.getDayWithSpecificFormat(lang!!)
                         hourAdapter = HourAdapter(result.data.timezone,lang!!)
                         dayAdapter = DayAdapter(lang!!)
@@ -188,7 +188,7 @@ class HomeFragment : Fragment() {
                         binding.progressBar.visibility = View.GONE
                         binding.constraint.visibility = View.VISIBLE
                         binding.noPermissionConstraint.visibility = View.GONE
-                        binding.homeTemperatureUnit.text = sharedPreferences.getString(Constants.UNITS_CHARACTER,"C")
+                        binding.homeTemperatureUnit.text = sharedPreferences.getString(Constants.UNITS_CHARACTER,"°C")
                         binding.homeDay.text = Constants.getDayWithSpecificFormat(lang!!)
                         hourAdapter = HourAdapter(result.data.timezone,lang!!)
                         dayAdapter = DayAdapter(lang!!)

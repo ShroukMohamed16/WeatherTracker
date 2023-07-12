@@ -62,4 +62,5 @@
     <string name="display_on_apps">سماح الظهور على باقى التطبيقات ؟</string>
     <string name="cancel">الغاء</string>
     <string name="beautiful_weather">"الطقس رائع "</string>
+    <string name="please_enable_notificaton">برجاء تفعيل الاشعارات</string>
 </resources>

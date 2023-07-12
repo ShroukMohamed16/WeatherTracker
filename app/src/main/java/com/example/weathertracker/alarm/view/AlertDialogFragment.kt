@@ -5,6 +5,7 @@ import android.app.TimePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -72,11 +73,15 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
     lateinit var alarmViewModel: AlarmViewModel
     lateinit var alarmViewModelFactory: AlarmViewModelFactory
     var alarmOrNotification: String = "alarm"
+    lateinit var sharedPreferences: SharedPreferences
+    lateinit var editor: Editor
     lateinit var desc: String
     lateinit var icon: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPreferences  = activity!!.getSharedPreferences(Constants.PREFERENCE_NAME,Context.MODE_PRIVATE)
+        editor = sharedPreferences.edit()
         alarmViewModelFactory = AlarmViewModelFactory(
             Repository.getInstance(
                 ApiClient.getInstance(),
@@ -118,6 +123,24 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
         }
         binding.cancelAlertDialog.setOnClickListener {
             dismiss()
+        }
+        binding.notificationRadioBtn.setOnClickListener {
+            if(!sharedPreferences.getBoolean(Constants.NOTIFICATIONS_IS_ENABLED,false)){
+                val builder = AlertDialog.Builder(requireContext())
+                    .setMessage(getString(R.string.please_enable_notificaton))
+                    .setPositiveButton(getString(R.string.enable)) { dialog, it ->
+                        editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,true)
+                            .apply()
+
+                    }.setNegativeButton(getString(R.string.no)){dialog,which ->
+                        editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,false)
+                            .apply()
+                       binding.addAlertDialog.isClickable = false
+                        dismiss()
+                    }
+                val dialog = builder.create()
+                dialog.show()
+            }
         }
         binding.addAlertDialog.setOnClickListener {
 
