@@ -52,4 +52,5 @@ The project utilizes the following dependencies:
 Unit Testing
 The project includes unit testing for the ViewModel and Repository components. Unit testing is an essential part of software development, as it helps ensure the correctness and reliability of the code.
 
-# SDK![Screenshot (884)](https://github.com/ShroukMohamed16/WeatherTracker/assets/96442266/d56a2f73-9216-475f-bf86-c518e3290897)
+# SDK
+![Screenshot (885)](https://github.com/ShroukMohamed16/WeatherTracker/assets/96442266/37aa25f3-f367-4dd7-8fb8-7c49c59564fe)
