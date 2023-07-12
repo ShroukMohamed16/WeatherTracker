@@ -26,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
+import java.io.IOException
 import java.util.*
 
 private const val TAG = "MapActivity"
@@ -83,68 +84,88 @@ class MapActivity : AppCompatActivity() {
             if (sharedPreferences.getString(Constants.MAP_DESTINATION, "initial") == "favorite") {
                 googleMap.setOnMapClickListener { latLng ->
                     updateMarkerPosition(latLng)
-                    val geocoder = Geocoder(this, Locale.getDefault())
-                    val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
-                    if (addresses!!.isNotEmpty()) {
-                        val address = addresses[0]
-                        val city = address.adminArea
-                        if (!city.isNullOrEmpty()) {
-                            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-                            builder.setMessage("$city ?")
-                            builder.setPositiveButton(getString(R.string.Save)) { dialog, it ->
-                                val lat = latLng.latitude
-                                val lng = latLng.longitude
-                                mapViewModel.insert(FavoriteItem(lat + lng, city, lat, lng))
-                                Toast.makeText(this, "Location saved: $city", Toast.LENGTH_SHORT).show()
+                    try {
+                        val geocoder = Geocoder(this, Locale.getDefault())
+                        val addresses =
+                            geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+                        if (addresses!!.isNotEmpty()) {
+                            val address = addresses[0]
+                            val city = address.adminArea
+                            if (!city.isNullOrEmpty()) {
+                                val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+                                builder.setMessage("$city ?")
+                                builder.setPositiveButton(getString(R.string.Save)) { dialog, it ->
+                                    val lat = latLng.latitude
+                                    val lng = latLng.longitude
+                                    mapViewModel.insert(FavoriteItem(lat + lng, city, lat, lng))
+                                    Toast.makeText(
+                                        this,
+                                        "Location saved: $city",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                builder.setNegativeButton(getString(R.string.no)) { dialog, which ->
+                                }
+                                val dialog = builder.create()
+                                dialog.show()
+                            } else {
+                                Toast.makeText(this, "Choose Specific Place", Toast.LENGTH_SHORT)
+                                    .show()
                             }
-                            builder.setNegativeButton(getString(R.string.no)) { dialog, which ->
-                            }
-                            val dialog = builder.create()
-                            dialog.show()
                         } else {
-                            Toast.makeText(this, "Choose Specific Place", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
                         }
-                    } else {
-                        Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
+                    }catch (e:IOException){
+                        e.printStackTrace()
+                        println("Poor Internet Connection")
                     }
                 }
             } else {
                 googleMap.setOnMapClickListener { latLng ->
                     updateMarkerPosition(latLng)
-                    val geocoder =
-                        Geocoder(this, Locale.getDefault())
-                    val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 10000)
-                    if (addresses!!.isNotEmpty()) {
-                        val address = addresses[0]
-                        val city = address.adminArea
-                        if (!city.isNullOrEmpty()) {
-                            val builder = androidx.appcompat.app.AlertDialog.Builder(this)
-                            builder.setMessage("$city ?")
-                            builder.setPositiveButton(getString(R.string.Save)) { dialog, it ->
-                                val lat = latLng.latitude
-                                val lng = latLng.longitude
-                                editor.putString(Constants.Lat_KEY, lat.toString())
-                                editor.putString(Constants.Lon_Key, lng.toString())
-                                editor.putString(Constants.LOCATION_NAME, city)
-                                editor.putBoolean(Constants.isInitializedTag, true)
-                                editor.commit()
-                                Toast.makeText(this, "Location saved: $city", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this, MainActivity::class.java)
-                                startActivity(intent)
-                                finish()
+                    try {
+                        val geocoder =
+                            Geocoder(this, Locale.getDefault())
+                        val addresses =
+                            geocoder.getFromLocation(latLng.latitude, latLng.longitude, 10000)
+                        if (addresses!!.isNotEmpty()) {
+                            val address = addresses[0]
+                            val city = address.adminArea
+                            if (!city.isNullOrEmpty()) {
+                                val builder = androidx.appcompat.app.AlertDialog.Builder(this)
+                                builder.setMessage("$city ?")
+                                builder.setPositiveButton(getString(R.string.Save)) { dialog, it ->
+                                    val lat = latLng.latitude
+                                    val lng = latLng.longitude
+                                    editor.putString(Constants.Lat_KEY, lat.toString())
+                                    editor.putString(Constants.Lon_Key, lng.toString())
+                                    editor.putString(Constants.LOCATION_NAME, city)
+                                    editor.putBoolean(Constants.isInitializedTag, true)
+                                    editor.commit()
+                                    Toast.makeText(
+                                        this,
+                                        "Location saved: $city",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                                builder.setNegativeButton(getString(R.string.no)) { dialog, which ->
+                                    dialog.dismiss()
+                                }
+                                val dialog = builder.create()
+                                dialog.show()
+                            } else {
+                                Toast.makeText(this, "Choose Specific Place", Toast.LENGTH_SHORT)
+                                    .show()
                             }
-                            builder.setNegativeButton(getString(R.string.no)) { dialog, which ->
-                                dialog.dismiss()
-                            }
-                            val dialog = builder.create()
-                            dialog.show()
+                        } else {
+                            Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
                         }
-                        else {
-                            Toast.makeText(this, "Choose Specific Place", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                    else {
-                        Toast.makeText(this, "error", Toast.LENGTH_SHORT).show()
+                    }catch (e:IOException){
+                        e.printStackTrace()
+                        println("Poor internet Connection")
                     }
                 }
             }

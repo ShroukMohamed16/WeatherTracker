@@ -35,7 +35,6 @@ import java.util.*
 
 private const val TAG = "SettingsFragment"
 class SettingsFragment : Fragment() {
-    var isRecreation:Boolean = false
     lateinit var binding: FragmentSettingsBinding
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editor:SharedPreferences.Editor

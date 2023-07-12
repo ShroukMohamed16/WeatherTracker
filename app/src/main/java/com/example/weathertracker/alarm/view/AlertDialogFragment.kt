@@ -2,7 +2,9 @@ package com.example.weathertracker.alarm.view
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
@@ -31,6 +33,7 @@ import com.example.weathertracker.databinding.FragmentAlertDialogBinding
 import com.example.weathertracker.db.ConcreteLocalSource
 import com.example.weathertracker.favorite.HomeRoomState
 import com.example.weathertracker.model.Alarm
+import com.example.weathertracker.model.FavoriteItem
 import com.example.weathertracker.model.Repository
 import com.example.weathertracker.network.ApiClient
 import com.google.android.material.snackbar.Snackbar
@@ -46,7 +49,7 @@ private const val TAG = "AlertDialogFragment"
 class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,TimePickerDialog.OnTimeSetListener {
 
     lateinit var binding: FragmentAlertDialogBinding
-    var type:String = ""
+    var type: String = ""
 
     private var day = 0
     private var month = 0
@@ -60,29 +63,37 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
     private var savedHour = 0
     private var savedMinute = 0
 
-    var endDateInMillis:Long? = null
-    var startDateInMillis:Long? =null
-    var endTimeInMillis:Long? = null
-    var startTimeInMillis:Long? = null
+    var endDateInMillis: Long? = null
+    var startDateInMillis: Long? = null
+    var endTimeInMillis: Long? = null
+    var startTimeInMillis: Long? = null
 
-    private lateinit var calender:Calendar
+    private lateinit var calender: Calendar
     lateinit var alarmViewModel: AlarmViewModel
     lateinit var alarmViewModelFactory: AlarmViewModelFactory
-    var alarmOrNotification :String = "alarm"
-    lateinit var desc:String
-    lateinit var icon:String
+    var alarmOrNotification: String = "alarm"
+    lateinit var desc: String
+    lateinit var icon: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        alarmViewModelFactory = AlarmViewModelFactory(Repository.getInstance(ApiClient.getInstance(),ConcreteLocalSource(requireContext())))
-        alarmViewModel = ViewModelProvider(this,alarmViewModelFactory).get(AlarmViewModel::class.java)
+        alarmViewModelFactory = AlarmViewModelFactory(
+            Repository.getInstance(
+                ApiClient.getInstance(),
+                ConcreteLocalSource(requireContext())
+            )
+        )
+        alarmViewModel =
+            ViewModelProvider(this, alarmViewModelFactory).get(AlarmViewModel::class.java)
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_alert_dialog, container, false)
+        binding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_alert_dialog, container, false)
         return binding.root
     }
 
@@ -150,14 +161,21 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
                                             .build()
 
                                         val dateFormat =
-                                            SimpleDateFormat("HH:mm a") 
+                                            SimpleDateFormat("HH:mm a")
 
                                         val fullDate = dateFormat.format(startTimeInMillis)
-                                        val currentTime = dateFormat.format(System.currentTimeMillis())
+                                        val currentTime =
+                                            dateFormat.format(System.currentTimeMillis())
 
                                         Log.i(TAG, "onViewCreated: $fullDate $currentTime")
-                                        Log.i(TAG, "onViewCreated: ${startTimeInMillis!! - System.currentTimeMillis()}")
-                                        Log.i(TAG, "onViewCreated: ${startTimeInMillis!! - Calendar.getInstance().timeInMillis}")
+                                        Log.i(
+                                            TAG,
+                                            "onViewCreated: ${startTimeInMillis!! - System.currentTimeMillis()}"
+                                        )
+                                        Log.i(
+                                            TAG,
+                                            "onViewCreated: ${startTimeInMillis!! - Calendar.getInstance().timeInMillis}"
+                                        )
                                         val request = OneTimeWorkRequestBuilder<myWorker>()
                                             .setInitialDelay(
                                                 startTimeInMillis!! - System.currentTimeMillis(),
@@ -191,10 +209,10 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
                         }
 
                     }
-                }else {
-                        checkDisplayOverlayerPermission()
+                } else {
+                    checkDisplayOverlayerPermission()
                 }
-            }else {
+            } else {
                 val builder = AlertDialog.Builder(requireContext())
                 builder.setMessage("Please fill all data")
                 val dialog = builder.create()
@@ -202,15 +220,17 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
             }
         }
     }
-    private fun getDateTimeCalender(){
+
+    private fun getDateTimeCalender() {
         calender = Calendar.getInstance()
-        year =  calender.get(Calendar.YEAR)
+        year = calender.get(Calendar.YEAR)
         month = calender.get(Calendar.MONTH)
         day = calender.get(Calendar.DAY_OF_MONTH)
         hour = calender.get(Calendar.HOUR)
-        minute =  calender.get(Calendar.MINUTE)
+        minute = calender.get(Calendar.MINUTE)
 
     }
+
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -221,9 +241,9 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
 
         if (requestCode == Constants.DRAW_OVER_OTHER_APPS_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Snackbar.make(view!!,"Generated",Snackbar.LENGTH_LONG).show()
+                Snackbar.make(view!!, "Generated", Snackbar.LENGTH_LONG).show()
             } else {
-                Toast.makeText(requireContext(),"Not Generated",Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Not Generated", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -233,20 +253,19 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
         val sdf = SimpleDateFormat(formatDate, Locale.getDefault())
         val formatTime = " hh : mm a"
         val stf = SimpleDateFormat(formatTime, Locale.getDefault())
-        if(type == "end") {
-            binding.endDay.text = sdf.format(Date(savedYear,savedMonth,savedDay))
-            binding.endTime.text = stf.format(Time(savedHour,savedMinute,0))
+        if (type == "end") {
+            binding.endDay.text = sdf.format(Date(savedYear, savedMonth, savedDay))
+            binding.endTime.text = stf.format(Time(savedHour, savedMinute, 0))
 
 
-            endDateInMillis = dateToMillis(savedDay,savedMonth,savedYear)
-             endTimeInMillis = timeToMillis(savedHour,savedMinute)
+            endDateInMillis = dateToMillis(savedDay, savedMonth, savedYear)
+            endTimeInMillis = timeToMillis(savedHour, savedMinute)
             Log.i(TAG, "dateInMillis:$endDateInMillis TimeInMillis:$endTimeInMillis ")
-        }
-        else if(type == "start") {
-            binding.startDay.text = sdf.format(Date(savedYear,savedMonth,savedDay))
-            binding.startTime.text = stf.format(Time(savedHour,savedMinute,0))
-            startDateInMillis = dateToMillis(savedDay,savedMonth,savedYear)
-            startTimeInMillis = timeToMillis(savedHour,savedMinute)
+        } else if (type == "start") {
+            binding.startDay.text = sdf.format(Date(savedYear, savedMonth, savedDay))
+            binding.startTime.text = stf.format(Time(savedHour, savedMinute, 0))
+            startDateInMillis = dateToMillis(savedDay, savedMonth, savedYear)
+            startTimeInMillis = timeToMillis(savedHour, savedMinute)
             Log.i(TAG, "dateInMillis:$startDateInMillis TimeInMillis:$startTimeInMillis ")
 
         }
@@ -258,12 +277,12 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
         savedMonth = month
         savedYear = year
         Log.i(TAG, "onDateSet: day $dayOfMonth month $month year $year")
-        calender.set(Calendar.DAY_OF_MONTH,dayOfMonth)
-        calender.set(Calendar.MONTH,month)
-        calender.set(Calendar.YEAR,year)
+        calender.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        calender.set(Calendar.MONTH, month)
+        calender.set(Calendar.YEAR, year)
 
         getDateTimeCalender()
-        TimePickerDialog(requireContext(),this,hour,minute,false).show()
+        TimePickerDialog(requireContext(), this, hour, minute, false).show()
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
@@ -271,13 +290,14 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
         savedMinute = minute
         Log.i(TAG, "onTimeSet: Hour $hourOfDay Minute $minute")
 
-        calender.set(Calendar.HOUR,hourOfDay)
-        calender.set(Calendar.MINUTE,minute)
+        calender.set(Calendar.HOUR, hourOfDay)
+        calender.set(Calendar.MINUTE, minute)
         convertDate(calender)
     }
+
     private fun dateToMillis(day: Int, month: Int, year: Int): Long {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
-        calendar.set(year, month , day) // Note: months in Calendar are 0-indexed
+        calendar.set(year, month, day) // Note: months in Calendar are 0-indexed
         return calendar.timeInMillis
     }
 
@@ -288,9 +308,10 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
         calendar.set(Calendar.SECOND, 0)
         calendar.set(Calendar.MILLISECOND, 0)
         return calendar.timeInMillis
-       // return calendar.timeInMillis % (24 * 60 * 60 * 1000) // Modulo to get milliseconds since midnight
+        // return calendar.timeInMillis % (24 * 60 * 60 * 1000) // Modulo to get milliseconds since midnight
     }
-    private fun checkDisplayOverlayerPermission(){
+
+    private fun checkDisplayOverlayerPermission() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setMessage("Allow to Display on Other Apps")
         builder.setPositiveButton(R.string.ok) { dialog, it ->
@@ -312,37 +333,38 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
 
     private fun checkAlertDurationValidation(): Boolean {
 
-            if (startDateInMillis!! <= endDateInMillis!!) {
-                if (startTimeInMillis!! <= endTimeInMillis!!) {
-                    Toast.makeText(
-                        requireContext(),
-                        "True",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    return true
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "End time should be after start time",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+        if (startDateInMillis!! <= endDateInMillis!!) {
+            if (startTimeInMillis!! <= endTimeInMillis!!) {
+                Toast.makeText(
+                    requireContext(),
+                    "True",
+                    Toast.LENGTH_LONG
+                ).show()
+                return true
             } else {
                 Toast.makeText(
                     requireContext(),
-                    "End date should be after start date",
+                    "End time should be after start time",
                     Toast.LENGTH_LONG
                 ).show()
             }
+        } else {
+            Toast.makeText(
+                requireContext(),
+                "End date should be after start date",
+                Toast.LENGTH_LONG
+            ).show()
+        }
         return false
 
     }
+
     private fun checkAlarmOrNotification(){
-       if(binding.alarmRadioBtn.isChecked)
+        if (binding.alarmRadioBtn.isChecked)
             alarmOrNotification = "alarm"
-       else if(binding.notificationRadioBtn.isChecked)
+        else if (binding.notificationRadioBtn.isChecked)
             alarmOrNotification = "notification"
+
+
     }
-
-
 }

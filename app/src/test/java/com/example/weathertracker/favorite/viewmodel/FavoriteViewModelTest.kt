@@ -3,6 +3,7 @@ package com.example.weathertracker.favorite.viewmodel
 import android.util.Size
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import app.cash.turbine.test
 import com.example.weathertracker.favorite.RoomState
 import com.example.weathertracker.map.viewmodel.FakeRepository
 import com.example.weathertracker.model.*
@@ -55,9 +56,17 @@ class FavoriteViewModelTest {
    }
     @Test
     fun getAllFavPlaces_getFavPlacesFromRoom() = runBlockingTest{
+        var value = listOf<FavoriteItem>()
         favoriteViewModel.getAllFavPlaces()
-        val value = favoriteViewModel.favPlacesList.value
-        assertThat(value,not(nullValue()))
+        favoriteViewModel.favPlacesList.test {
+            this.awaitItem().apply {
+                when(this){
+                    is RoomState.Success -> { value = this.data}
+                    else->{}
+                }
+                assertEquals(3,value.size)
+            }
+        }
 
     }
     @Test

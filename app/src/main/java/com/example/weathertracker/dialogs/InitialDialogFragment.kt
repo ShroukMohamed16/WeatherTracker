@@ -177,6 +177,7 @@ class InitialDialogFragment : DialogFragment() {
 
                 }catch (e:IOException){
                     e.printStackTrace()
+                    println("Poor Internet Connection")
                 }
                editor.putBoolean(Constants.PERMISSIONS_IS_ENABLED,true).apply()
                 val intent = Intent(context, MainActivity::class.java)

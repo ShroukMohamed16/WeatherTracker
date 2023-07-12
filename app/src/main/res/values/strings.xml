@@ -65,5 +65,6 @@
     <string name="app_name">Weather Tracker</string>
     <string name="cancel">Cancel</string>
     <string name="beautiful_weather">The Beautiful Weather</string>
+    <string name="please_enable_notificaton">Please Enable Notification</string>
 
 </resources>
