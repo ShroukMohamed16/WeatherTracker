@@ -116,7 +116,7 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
                  try {
                      delay(30000)
                      withContext(Dispatchers.IO){
-                         repo.deleteAlarmFromRoom(alarm!!.startDate,alarm!!.endTime)
+                         repo.deleteAlarmFromRoom(alarm!!.startTime,alarm!!.endTime)
                      }
                      withContext(Dispatchers.Main) {
                          dismiss()
@@ -125,8 +125,9 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
                      cancel()
                  }
              }
-
+             
         }
+
         // Load and play the sound effect
         val mediaPlayer = MediaPlayer.create(context, R.raw.aletr_sound)
         mediaPlayer.start()

@@ -83,12 +83,12 @@ class SettingsFragment : Fragment() {
 
         binding.enableRadioBtn.setOnClickListener {
             binding.enableRadioBtn.isChecked = true
-            editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,true)
+            editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,true).apply()
             Toast.makeText(requireContext(),getString(R.string.notification_enabled),Toast.LENGTH_LONG).show()
         }
         binding.disableRadioBtn.setOnClickListener{
             binding.disableRadioBtn.isChecked = true
-            editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,false)
+            editor.putBoolean(Constants.NOTIFICATIONS_IS_ENABLED,false).apply()
             Toast.makeText(requireContext(),getString(R.string.notification_disable),Toast.LENGTH_LONG).show()
 
         }
