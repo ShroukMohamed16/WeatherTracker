@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.work.WorkManager
 import com.example.weathertracker.R
 import com.example.weathertracker.alarm.AlarmRoomState
 import com.example.weathertracker.databinding.FragmentAlarmBinding
@@ -49,6 +50,8 @@ class AlarmFragment : Fragment() {
             builder.setMessage("Are you sure for delete this item ?")
             builder.setPositiveButton("Ok") { dialog, it ->
                 alarmViewModel.deleteAlarm(alarm)
+                val worker = WorkManager.getInstance(requireContext())
+                worker.cancelAllWorkByTag(alarm!!.startDate.toString())
                 Toast.makeText(requireContext(), "item deleted", Toast.LENGTH_SHORT).show()
             }
             builder.setNegativeButton("Cancel") { dialog, which ->

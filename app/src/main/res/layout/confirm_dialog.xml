@@ -40,6 +40,7 @@
             app:layout_constraintTop_toBottomOf="@id/location_confirm_dialog" />
 
         <com.google.android.material.button.MaterialButton
+            android:theme="@style/Theme.MaterialComponents.Light"
             android:id="@+id/save_btn_confirm_dialog"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

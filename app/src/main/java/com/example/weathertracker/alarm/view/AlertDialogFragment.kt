@@ -182,8 +182,8 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
                                     else -> {
                                         Toast.makeText(
                                             requireContext(),
-                                            "Fail to get data",
-                                            Toast.LENGTH_LONG
+                                            "",
+                                            Toast.LENGTH_SHORT
                                         ).show()
                                     }
                                 }
@@ -313,22 +313,22 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
 
     private fun checkAlertDurationValidation(): Boolean {
 
-        if (startDateInMillis!! <= endDateInMillis!!) {
-            if (startTimeInMillis!! <= endTimeInMillis!!) {
-                Toast.makeText(
-                    requireContext(),
-                    "True",
-                    Toast.LENGTH_LONG
-                ).show()
-                return true
-            }else{
-                Toast.makeText(
-                    requireContext(),
-                    "End time should be after start time",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        } else {
+            if (startDateInMillis!! <= endDateInMillis!!) {
+                if (startTimeInMillis!! <= endTimeInMillis!!) {
+                    Toast.makeText(
+                        requireContext(),
+                        "True",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return true
+                } else {
+                    Toast.makeText(
+                        requireContext(),
+                        "End time should be after start time",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            } else {
                 Toast.makeText(
                     requireContext(),
                     "End date should be after start date",

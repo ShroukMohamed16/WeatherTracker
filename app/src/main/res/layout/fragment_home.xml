@@ -109,6 +109,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/allow_permission_point"
+                    android:theme="@style/Theme.MaterialComponents.Light"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/white"
@@ -163,7 +164,7 @@
                     android:layout_height="0dp"
                     android:layout_marginStart="10dp"
                     android:fontFamily="serif"
-                    android:text="@string/celisus"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="30sp"
                     android:textStyle="bold"

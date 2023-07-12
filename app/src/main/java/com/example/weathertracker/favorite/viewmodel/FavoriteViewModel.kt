@@ -29,6 +29,9 @@ class FavoriteViewModel(val repositoryInterface: RepositoryInterface):ViewModel(
                 }
         }
     }
+
+
+
     fun delete(favoriteItem: FavoriteItem){
         viewModelScope.launch(Dispatchers.IO){
             repositoryInterface.deleteFromFavPlacesFromRoom(favoriteItem)

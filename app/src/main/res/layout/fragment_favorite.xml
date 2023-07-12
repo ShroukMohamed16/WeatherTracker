@@ -65,6 +65,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fav_floating_btn"
+            android:theme="@style/Theme.MaterialComponents.Light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"

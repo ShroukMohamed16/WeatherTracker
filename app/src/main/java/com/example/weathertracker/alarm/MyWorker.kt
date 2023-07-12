@@ -13,15 +13,23 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.WindowManager
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.getSystemService
+import androidx.lifecycle.ViewModelProvider
 import androidx.work.CoroutineWorker
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import com.example.weathertracker.Constants
 import com.example.weathertracker.R
+import com.example.weathertracker.alarm.viewmodel.AlarmViewModel
+import com.example.weathertracker.alarm.viewmodel.AlarmViewModelFactory
 import com.example.weathertracker.databinding.FragmentNotificationBinding
+import com.example.weathertracker.db.ConcreteLocalSource
 import com.example.weathertracker.model.Alarm
+import com.example.weathertracker.model.Repository
+import com.example.weathertracker.network.ApiClient
 import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -34,9 +42,21 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
     private val currentTimeMillis = System.currentTimeMillis()
     lateinit var icon:String
 
+   val repo = Repository.getInstance(ApiClient.getInstance(), ConcreteLocalSource(applicationContext))
+
+
     @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result {
         startWorker()
+
+        if(System.currentTimeMillis() > alarm!!.endTime){
+            repo.deleteAlarmFromRoom(alarm!!)
+            val worker = WorkManager.getInstance(applicationContext)
+            worker.cancelAllWorkByTag(alarm!!.startDate.toString())
+
+        }
+        repo.deleteAlarmFromRoom(alarm!!)
+
         return Result.Success()
     }
 
@@ -61,24 +81,26 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
             icon = inputData.getString("icon")!!
             if (alarmOrNotification == "alarm") {
                 withContext(Dispatchers.Main) {
-                    showAlertDialog(inputData.getString("desc")!!)
+                    val context = applicationContext ?: return@withContext Result.failure()
+                    val themeContext = ContextThemeWrapper(context, R.style.Theme_WeatherTracker)
+                    showAlertDialog(themeContext,inputData.getString("desc")!!)
                 }
             } else {
                 createNotification()
+                repo.localSource.deleteFromAlarms(alarm!!)
+
             }
 
         }
-        else{
-            Log.i(TAG, "startWorker: Invaild Time")
-        }
+
     }
 
   //  @SuppressLint("SuspiciousIndentation")
     @SuppressLint("SuspiciousIndentation")
-     fun showAlertDialog(desc: String) {
+      fun showAlertDialog(context: Context,desc: String) {
         val alertDialogBinding =
-            FragmentNotificationBinding.inflate(LayoutInflater.from(applicationContext))
-        val alertDialogBuilder = AlertDialog.Builder(applicationContext)
+            FragmentNotificationBinding.inflate(LayoutInflater.from(context))
+        val alertDialogBuilder = AlertDialog.Builder(context)
 
         alertDialogBuilder.setView(alertDialogBinding.root)
         alertDialogBinding.weatherDescription.text = desc
@@ -90,14 +112,16 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
         }
 
         // Load and play the sound effect
-        val mediaPlayer = MediaPlayer.create(applicationContext, R.raw.aletr_sound)
+        val mediaPlayer = MediaPlayer.create(context, R.raw.aletr_sound)
         mediaPlayer.start()
         alertDialogBinding.imageView3.setImageResource(Constants.setIcon(icon))
 
         alertDialogBinding.dismissBtn.setOnClickListener {
+            Log.i(TAG, "showAlertDialog: Dismiss")
             dialog.dismiss()
+
             mediaPlayer.release()
-            val worker = WorkManager.getInstance(applicationContext)
+            val worker = WorkManager.getInstance(context)
             worker.cancelAllWorkByTag(alarm!!.startDate.toString())
         }
         dialog.show()
@@ -111,12 +135,13 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
 
         val builder = NotificationCompat.Builder(applicationContext, "my_channel_id")
             .setSmallIcon(R.drawable.sky)
-            .setContentTitle(R.string.weather.toString())
+            .setContentTitle("Weather Today")
             .setContentText(inputData.getString("desc")!!)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 
         val notificationManager = getSystemService(applicationContext,NotificationManager::class.java)
         notificationManager!!.notify(1, builder.build())
+
     }
 
 
