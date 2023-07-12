@@ -14,7 +14,7 @@ interface RepositoryInterface {
     //for alarms
     fun getAlarmsFromRoom(): Flow<List<Alarm>>
     suspend fun insertAlarmToRoom(alarm: Alarm)
-    suspend fun deleteAlarmFromRoom(alarm: Alarm)
+    suspend fun deleteAlarmFromRoom(start:Long , end:Long)
 
     //for Weather
     suspend fun insertWeatherToRoom(weatherEntity: WeatherEntity)

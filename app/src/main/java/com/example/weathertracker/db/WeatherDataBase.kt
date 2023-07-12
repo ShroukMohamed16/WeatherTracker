@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.weathertracker.model.*
 
-@Database(entities = [FavoriteItem::class, Alarm::class,WeatherEntity::class], version = 2)
+@Database(entities = [FavoriteItem::class, Alarm::class,WeatherEntity::class], version = 3)
 @TypeConverters(TypeConverter::class)
 
 abstract class WeatherDataBase:RoomDatabase(){

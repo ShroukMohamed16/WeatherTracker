@@ -31,8 +31,7 @@ import com.example.weathertracker.model.Alarm
 import com.example.weathertracker.model.Repository
 import com.example.weathertracker.network.ApiClient
 import com.google.gson.Gson
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -42,20 +41,22 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
     private val currentTimeMillis = System.currentTimeMillis()
     lateinit var icon:String
 
-   val repo = Repository.getInstance(ApiClient.getInstance(), ConcreteLocalSource(applicationContext))
-
+   val repo = Repository.getInstance(ApiClient.getInstance(), ConcreteLocalSource(appContext))
+    lateinit var dialog:AlertDialog
 
     @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result {
         startWorker()
 
         if(System.currentTimeMillis() > alarm!!.endTime){
-            repo.deleteAlarmFromRoom(alarm!!)
+            dialog.dismiss()
+            deleteAlert()
+            Log.i(TAG, "doWork: ${alarm.toString()}")
             val worker = WorkManager.getInstance(applicationContext)
             worker.cancelAllWorkByTag(alarm!!.startDate.toString())
-
         }
-        repo.deleteAlarmFromRoom(alarm!!)
+        deleteAlert()
+        Log.i(TAG, "doWork: ${alarm.toString()}")
 
         return Result.Success()
     }
@@ -63,6 +64,8 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
     suspend fun startWorker() {
         val strAlertGson = inputData.getString("alarm")
         alarm = Gson().fromJson(strAlertGson, Alarm::class.java)
+        Log.i(TAG, "startWorker: ${alarm.toString()}")
+        //Log.i(TAG, "startWorker: ")
 
         val current_date = Date(currentTimeMillis)
         val sdf = SimpleDateFormat("HH:mm")
@@ -87,7 +90,7 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
                 }
             } else {
                 createNotification()
-                repo.localSource.deleteFromAlarms(alarm!!)
+                deleteAlert()
 
             }
 
@@ -105,12 +108,25 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
         alertDialogBuilder.setView(alertDialogBinding.root)
         alertDialogBinding.weatherDescription.text = desc
 
-        val dialog = alertDialogBuilder.create().apply {
-            window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
-            window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            window?.setGravity(Gravity.TOP)
-        }
+         dialog = alertDialogBuilder.create().apply {
+             window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY)
+             window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+             window?.setGravity(Gravity.TOP)
+             CoroutineScope(Dispatchers.IO).launch {
+                 try {
+                     delay(30000)
+                     withContext(Dispatchers.IO){
+                         repo.deleteAlarmFromRoom(alarm!!.startDate,alarm!!.endTime)
+                     }
+                     withContext(Dispatchers.Main) {
+                         dismiss()
+                     }
+                 }finally {
+                     cancel()
+                 }
+             }
 
+        }
         // Load and play the sound effect
         val mediaPlayer = MediaPlayer.create(context, R.raw.aletr_sound)
         mediaPlayer.start()
@@ -144,7 +160,11 @@ class myWorker(appContext: Context , params:WorkerParameters): CoroutineWorker(a
 
     }
 
-
+   suspend fun deleteAlert(){
+       repo.deleteAlarmFromRoom(alarm!!.startTime,alarm!!.endTime)
+       val worker = WorkManager.getInstance(applicationContext)
+       worker.cancelAllWorkByTag(alarm!!.startDate.toString())
+   }
 
 
 

@@ -49,7 +49,7 @@ class AlarmFragment : Fragment() {
             val builder = androidx.appcompat.app.AlertDialog.Builder(requireContext())
             builder.setMessage("Are you sure for delete this item ?")
             builder.setPositiveButton("Ok") { dialog, it ->
-                alarmViewModel.deleteAlarm(alarm)
+                alarmViewModel.deleteAlarm(alarm.startTime,alarm.endTime)
                 val worker = WorkManager.getInstance(requireContext())
                 worker.cancelAllWorkByTag(alarm!!.startDate.toString())
                 Toast.makeText(requireContext(), "item deleted", Toast.LENGTH_SHORT).show()

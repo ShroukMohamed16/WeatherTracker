@@ -1,12 +1,14 @@
 package com.example.weathertracker.db
 
 import android.content.Context
+import android.util.Log
 import com.example.weathertracker.model.Alarm
 import com.example.weathertracker.model.FavoriteItem
 import com.example.weathertracker.model.MyResponse
 import com.example.weathertracker.model.WeatherEntity
 import kotlinx.coroutines.flow.Flow
 
+private const val TAG = "ConcreteLocalSource"
 class ConcreteLocalSource(context: Context):LocalSource {
 
     private val dao:DAO by lazy{
@@ -34,8 +36,9 @@ class ConcreteLocalSource(context: Context):LocalSource {
         dao.insertAlarm(alarm)
     }
 
-    override suspend fun deleteFromAlarms(alarm: Alarm) {
-        dao.deleteAlarm(alarm)
+    override suspend fun deleteFromAlarms(start:Long , end:Long) {
+        Log.i(TAG, "deleteFromAlarms: delete alarm in local")
+        dao.deleteAlarm(start,end)
     }
 
   override suspend fun insertToWeather(weatherEntity: WeatherEntity) {

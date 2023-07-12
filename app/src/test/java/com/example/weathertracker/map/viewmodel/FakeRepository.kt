@@ -37,8 +37,11 @@ class FakeRepository(var favList: MutableList<FavoriteItem> = mutableListOf()
         alarmList.add(alarm)
     }
 
-    override suspend fun deleteAlarmFromRoom(alarm: Alarm) {
-        alarmList.remove(alarm)
+    override suspend fun deleteAlarmFromRoom(start:Long ,end:Long) {
+        for(alarm in alarmList){
+            if (start == alarm.startTime && end == alarm.endTime)
+                alarmList.remove(alarm)
+        }
     }
 
     override suspend fun insertWeatherToRoom(weatherEntity: WeatherEntity) {

@@ -18,7 +18,7 @@ interface LocalSource {
     //For Alarms
     fun getAlarms():Flow<List<Alarm>>
     suspend fun insertToAlarms(alarm: Alarm)
-    suspend fun deleteFromAlarms(alarm: Alarm)
+    suspend fun deleteFromAlarms(start:Long,end:Long)
 
     //for Weather
    suspend fun insertToWeather(weatherEntity: WeatherEntity)

@@ -24,6 +24,7 @@ import com.example.weathertracker.R
 import com.example.weathertracker.databinding.FragmentInitialDialogBinding
 import com.example.weathertracker.map.view.MapActivity
 import com.google.android.gms.location.*
+import java.io.IOException
 import java.util.*
 
 private const val TAG = "InitialDialogFragment"
@@ -164,15 +165,20 @@ class InitialDialogFragment : DialogFragment() {
         }
         locationCallback = object : LocationCallback(){
             override fun onLocationResult(locationResult: LocationResult?) {
-                Log.i(TAG, "onLocationResult: ")
+                //Log.i(TAG, "onLocationResult: ")
                 val lastLocation = locationResult!!.lastLocation
                 editor.putString(Constants.Lat_KEY,lastLocation.latitude.toString()).apply()
                 editor.putString(Constants.Lon_Key,lastLocation.longitude.toString()).apply()
-               val geo= Geocoder(myContext, Locale.getDefault())
-                val address = geo.getFromLocation(lastLocation.latitude,lastLocation.longitude,1)
-                Log.i(TAG, "onLocationResult: ${address!![0].subAdminArea}")
-                editor.putString(Constants.LOCATION_NAME,address[0].subAdminArea).apply()
-                editor.putBoolean(Constants.PERMISSIONS_IS_ENABLED,true).apply()
+                try {
+                    val geo= Geocoder(myContext, Locale.getDefault())
+                    val address = geo.getFromLocation(lastLocation.latitude,lastLocation.longitude,1)
+                    Log.i(TAG, "onLocationResult: ${address!![0].subAdminArea}")
+                    editor.putString(Constants.LOCATION_NAME,address[0].subAdminArea).apply()
+
+                }catch (e:IOException){
+                    e.printStackTrace()
+                }
+               editor.putBoolean(Constants.PERMISSIONS_IS_ENABLED,true).apply()
                 val intent = Intent(context, MainActivity::class.java)
                 startActivity(intent)
                 requireActivity().finish()

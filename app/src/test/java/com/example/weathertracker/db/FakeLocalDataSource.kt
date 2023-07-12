@@ -29,8 +29,11 @@ class FakeLocalDataSource(var favList: MutableList<FavoriteItem> = mutableListOf
         alarmList.add(alarm)
     }
 
-    override suspend fun deleteFromAlarms(alarm: Alarm) {
-        alarmList.remove(alarm)
+    override suspend fun deleteFromAlarms(start:Long , end:Long) {
+        for(alarm in alarmList){
+            if (start == alarm.startTime && end == alarm.endTime)
+                alarmList.remove(alarm)
+        }
     }
 
     override suspend fun insertToWeather(weatherEntity: WeatherEntity) {

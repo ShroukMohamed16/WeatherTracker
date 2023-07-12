@@ -53,8 +53,9 @@ class Repository(private var remoteSource: RemoteSource,var localSource: LocalSo
         localSource.insertToAlarms(alarm)
     }
 
-    override suspend fun deleteAlarmFromRoom(alarm: Alarm) {
-        localSource.deleteFromAlarms(alarm)
+    override suspend fun deleteAlarmFromRoom(start:Long , end:Long) {
+        Log.i(TAG, "deleteAlarmFromRoom: delet alarm in repo")
+        localSource.deleteFromAlarms(start , end)
     }
 
    override suspend fun insertWeatherToRoom(weatherEntity: WeatherEntity) {

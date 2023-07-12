@@ -113,7 +113,7 @@ class MapActivity : AppCompatActivity() {
                     updateMarkerPosition(latLng)
                     val geocoder =
                         Geocoder(this, Locale.getDefault())
-                    val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1)
+                    val addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 10000)
                     if (addresses!!.isNotEmpty()) {
                         val address = addresses[0]
                         val city = address.adminArea

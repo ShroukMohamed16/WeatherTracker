@@ -51,9 +51,9 @@ class AlarmViewModel(private val repositoryInterface: RepositoryInterface): View
             getAllAlarms()
         }
     }
-    fun deleteAlarm(alarm: Alarm){
+    fun deleteAlarm(start:Long , end:Long){
         viewModelScope.launch(Dispatchers.IO){
-            repositoryInterface.deleteAlarmFromRoom(alarm)
+            repositoryInterface.deleteAlarmFromRoom(start ,end)
             getAllAlarms()
         }
     }

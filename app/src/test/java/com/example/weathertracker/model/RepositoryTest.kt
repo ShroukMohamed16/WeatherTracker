@@ -138,7 +138,7 @@ class RepositoryTest {
     @Test
     fun deleteAlarmFromRoom_Alarm()= runBlockingTest {
         val alarm4 = Alarm(17887,485645,489754,488456)
-        repository.deleteAlarmFromRoom(alarm4)
+        repository.deleteAlarmFromRoom(alarm4.startTime,alarm4.endTime)
         repository.getAlarmsFromRoom().collect {
             assertFalse(it.contains(alarm4))
         }

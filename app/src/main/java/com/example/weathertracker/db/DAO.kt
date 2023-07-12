@@ -27,8 +27,8 @@ interface DAO {
         @Insert(onConflict = OnConflictStrategy.REPLACE)
         suspend fun insertAlarm(alarm: Alarm)
 
-        @Delete
-        suspend fun deleteAlarm(alarm: Alarm)
+        @Query("DELETE FROM alarm WHERE  startTime= :start And endTime=:end")
+        suspend fun deleteAlarm(start:Long,end:Long)
 
         //For Weather
        @Insert(onConflict = OnConflictStrategy.REPLACE)
