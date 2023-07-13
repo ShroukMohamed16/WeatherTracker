@@ -1,8 +1,6 @@
 package com.example.weathertracker.favorite.view
 
-import android.content.Context
-import android.content.Intent
-import android.content.SharedPreferences
+import android.content.*
 import android.net.ConnectivityManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -39,6 +37,7 @@ class FavoriteFragment : Fragment(),OnClickListener {
     lateinit var sharedPreferences: SharedPreferences
     lateinit var editor:SharedPreferences.Editor
     lateinit var snackbar:Snackbar
+    private var connectivityReceiver: BroadcastReceiver? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +50,15 @@ class FavoriteFragment : Fragment(),OnClickListener {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        checkNetworkAtRuntime()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        activity?.unregisterReceiver(connectivityReceiver)
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -139,7 +147,23 @@ class FavoriteFragment : Fragment(),OnClickListener {
         val activeNetworkInfo = connectivityManager.activeNetworkInfo
         return activeNetworkInfo != null && activeNetworkInfo.isConnected
     }
+    private fun checkNetworkAtRuntime()
+    {
+        val connectivityManager = activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val intentFilter = IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION)
 
+        connectivityReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val networkInfo = connectivityManager.activeNetworkInfo
+
+                if (networkInfo == null || !networkInfo.isConnected) {
+                    Snackbar.make(view!!, R.string.no_network_connection, Snackbar.LENGTH_LONG).show()
+                }
+            }
+        }
+
+        activity?.registerReceiver(connectivityReceiver, intentFilter)
+    }
 
 
 

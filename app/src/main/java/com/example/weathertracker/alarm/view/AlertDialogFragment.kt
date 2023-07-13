@@ -168,7 +168,7 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
                                         Log.i(TAG, "onViewCreated: Successs")
                                         if (!result.data.alerts.isNullOrEmpty()) {
                                             Log.i(TAG, "onViewCreated: null")
-                                            desc = result.data.alerts!!.get(0).description
+                                            desc = result.data.alerts!!.get(0).event
                                         } else {
                                             Log.i(TAG, "onViewCreated: not null")
                                             desc = getString(R.string.beautiful_weather)

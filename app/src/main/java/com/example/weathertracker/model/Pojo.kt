@@ -98,6 +98,7 @@ data class Alert(
     val event: String,
     val start: Long,
     val end: Long,
+    val tag:String,
     val description: String
 )
 
