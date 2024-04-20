@@ -67,15 +67,16 @@ class HomeFragment : Fragment() {
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        checkNetworkAtRuntime()
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         myContext = context
     }
+    override fun onStart() {
+        super.onStart()
+        checkNetworkAtRuntime()
+    }
+
 
     override fun onStop() {
         super.onStop()
@@ -429,7 +430,6 @@ class HomeFragment : Fragment() {
                 }
             }
         }
-
         activity?.registerReceiver(connectivityReceiver, intentFilter)
     }
 

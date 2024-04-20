@@ -20,6 +20,7 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
@@ -162,7 +163,7 @@ class AlertDialogFragment : DialogFragment(),DatePickerDialog.OnDateSetListener,
                         lifecycleScope.launch {
                             alarmViewModel.getWeatherAlarms()
                             Log.i(TAG, "onViewCreated: call getWeatherFromRoom")
-                            alarmViewModel.weatherAlarmsList.collectLatest { result ->
+                            alarmViewModel.weatherAlarmsList.collectLatest{ result ->
                                 when (result) {
                                     is HomeRoomState.Success -> {
                                         Log.i(TAG, "onViewCreated: Successs")

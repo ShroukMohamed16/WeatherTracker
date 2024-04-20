@@ -5,9 +5,7 @@ import com.example.weathertracker.db.LocalSource
 import com.example.weathertracker.network.RemoteSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOf
-import okhttp3.ResponseBody
-import kotlin.math.log
+
 
 private const val TAG = "Repository"
 class Repository(private var remoteSource: RemoteSource,var localSource: LocalSource) :RepositoryInterface{
